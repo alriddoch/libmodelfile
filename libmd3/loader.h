@@ -20,17 +20,17 @@
 #define LIBMD3_LOADER_H
 
 struct _md3_header;
-struct _md3_bone;
+struct _md3_frame;
 struct _md3_tag;
 struct _md3_mesh;
 struct _md3_skin;
 
 typedef struct _libmd3_file {
     struct _md3_header *    header;   /* Indexes of vertices */
-    struct _md3_bone *      bones;    /* bones */
+    struct _md3_frame *     frames;   /* frames */
     struct _md3_tag *       tags;     /* tags */
     struct _md3_mesh *      meshes;   /* meshes */
-    struct _md3_skin *      skins;   /* meshes */
+    struct _md3_skin *      skins;    /* meshes */
 } libmd3_file;
 
 libmd3_file * libmd3_file_load(const char * filename);

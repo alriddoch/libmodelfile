@@ -22,13 +22,58 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static int libmd3_bone_load(FILE * fptr, libmd3_file * file)
+#include <assert.h>
+
+static int libmd3_frame_load(FILE * fptr, libmd3_file * file)
 {
+    assert(fptr != NULL);
+    assert(file != NULL);
+    assert(file->header != NULL);
+
+    md3_frame * frames = calloc(file->header->frame_count, sizeof(md3_frame));
+    if (frames == NULL) {
+        perror("calloc");
+        return 1;
+    }
+    file->frames = frames;
+    int cnt = fread(frames, sizeof(md3_frame), file->header->frame_count, fptr);
+    if (cnt != file->header->frame_count) {
+        fprintf(stderr, "Unexpected end of file.\n");
+        return 1;
+    }
     return 0;
 }
 
 static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
 {
+    assert(fptr != NULL);
+    assert(file != NULL);
+    assert(file->header != NULL);
+
+    if (file->header->tag_start != (sizeof(md3_header) +
+                                    sizeof(md3_frame) * file->header->frame_count)) {
+        fprintf(stderr, "Unexpected tag start pos.\n");
+        return 1;
+    }
+
+    int num_tags = file->header->frame_count * file->header->tag_count;
+    size_t len_tags = num_tags * sizeof(md3_tag);
+    printf("Expected len %d, actual len %d\n", len_tags, file->header->tag_end - file->header->tag_start);
+    if (len_tags != (file->header->tag_end - file->header->tag_start)) {
+        fprintf(stderr, "Unexpected size of tags.\n");
+        return 1;
+    }
+
+    md3_tag * tags = calloc(num_tags, sizeof(md3_tag));
+    if (tags == NULL) {
+        perror("calloc");
+        return 1;
+    }
+    int cnt = fread(tags, sizeof(md3_tag), num_tags, fptr);
+    if (cnt != num_tags) {
+        fprintf(stderr, "Unexpected end of file.\n");
+        return 1;
+    }
     return 0;
 }
 
@@ -92,7 +137,7 @@ libmd3_file * libmd3_file_load(const char * filename)
 
     file->header = header;
 
-    libmd3_bone_load(fptr, file);
+    libmd3_frame_load(fptr, file);
     libmd3_tag_load(fptr, file);
     libmd3_mesh_load(fptr, file);
     libmd3_skin_load(fptr, file);

@@ -40,13 +40,13 @@ typedef struct _md3_header {
     int32_t         size;           /* File size */
 } md3_header;
 
-typedef struct _md3_bone {
+typedef struct _md3_frame {
     float           mins[3];
     float           maxs[3];
     float           position[3];
     float           scale;
     int8_t          string[16];
-} md3_bone;
+} md3_frame;
 
 typedef struct _md3_tag {
     int8_t          name[64];       /* Name */
