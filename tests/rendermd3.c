@@ -138,8 +138,8 @@ int initScreen()
     glEnableClientState(GL_VERTEX_ARRAY);
 
     /* Set the colour the screen will be when cleared - black */
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glColor3f(0.3, 0.3, 0.3);
+    glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
+    glColor3f(1.0f, 1.0f, 1.0f);
 
     /* Set the projection transform */
     glMatrixMode(GL_PROJECTION);
@@ -149,9 +149,10 @@ int initScreen()
     return 0;
 }
 
-void setup(const char * file)
+int setup(const char * file)
 {
     modelFile = libmd3_file_load(file);
+    return (modelFile == NULL);
 }
 
 static void fixPath(char * filename)
@@ -351,7 +352,10 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    setup(argv[1]);
+    if (setup(argv[1])) {
+        fprintf(stderr, "%s: Failed to load \"%s\".\n", argv[0], argv[1]);
+        return 1;
+    }
 
     loop();
     return 0;

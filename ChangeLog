@@ -1,5 +1,11 @@
 2004-03-14  Al Riddoch  <alriddoch@zepler.org>
 
+	* tests/rendermd3.c: Set colour for full brightness, and
+	  set background to grey for contrast. Detect if model is not
+	  found.
+
+2004-03-14  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/mesh.h, libmd3/loader.h: Add user union to libmd3 defined
 	  structs for extra info.
 
