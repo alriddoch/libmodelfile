@@ -1,5 +1,12 @@
 2004-02-29  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/structure.h: Re-format using spaces.
+
+	* libmd3/loader.c: Break into functions, and add stubs for
+	  the rest of the loader.
+
+2004-02-29  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/loader.c, libmd3/loader.h: Add first stage of code
 	  to actually load the file.
 

@@ -22,26 +22,36 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-libmd3_file * libmd3_file_load(const char * filename)
+static int libmd3_bone_load(FILE * fptr, libmd3_file * file)
 {
-    FILE * file;
-    md3_header * header;
-    libmd3_file * lf;
+    return 0;
+}
+
+static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
+{
+    return 0;
+}
+
+static int libmd3_mesh_load(FILE * fptr, libmd3_file * file)
+{
+    return 0;
+}
+
+static int libmd3_skin_load(FILE * fptr, libmd3_file * file)
+{
+    return 0;
+}
+
+static md3_header * libmd3_header_load(FILE * fptr)
+{
     size_t len;
-
-    file = fopen(filename, "rb");
-    if (file == NULL) {
-        printf("1\n");
-        return NULL;
-    }
-
-    header = calloc(0, sizeof(md3_header));
+    md3_header * header = calloc(0, sizeof(md3_header));
     if (header == NULL) {
         printf("2\n");
         return NULL;
     }
 
-    if ((len = fread(header, sizeof(md3_header), 1, file)) != 1) {
+    if ((len = fread(header, sizeof(md3_header), 1, fptr)) != 1) {
         printf("3 %d %d\n", len, sizeof(md3_header));
         free(header);
         return NULL;
@@ -56,13 +66,36 @@ libmd3_file * libmd3_file_load(const char * filename)
         return NULL;
     }
 
-    lf = calloc(0, sizeof(libmd3_file));
-    if (lf == NULL) {
+    return header;
+}
+
+libmd3_file * libmd3_file_load(const char * filename)
+{
+    FILE * fptr = 0;
+    md3_header * header = 0;
+    libmd3_file * file = 0;
+
+    fptr = fopen(filename, "rb");
+    if (fptr == NULL) {
+        printf("1\n");
+        return NULL;
+    }
+
+    header = libmd3_header_load(fptr);
+
+    file = calloc(0, sizeof(libmd3_file));
+    if (file == NULL) {
         printf("5\n");
         free(header);
         return NULL;
     }
 
-    lf->header = header;
-    return lf;
+    file->header = header;
+
+    libmd3_bone_load(fptr, file);
+    libmd3_tag_load(fptr, file);
+    libmd3_mesh_load(fptr, file);
+    libmd3_skin_load(fptr, file);
+
+    return file;
 }
