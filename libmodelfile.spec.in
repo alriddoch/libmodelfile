@@ -1,7 +1,7 @@
 %define name @PACKAGE@
 %define version @VERSION@
 %define release 1
-%define libsuffix @ATLAS_LIB_SUFFIX@
+%define libsuffix @LIBMF_LIB_SUFFIX@
 
 Summary: The Atlas protocol C++ implementation
 Name: %{name}
@@ -10,9 +10,8 @@ Release: %{release}
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.gz
-Requires: libstdc++
 BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
-BuildRequires: gcc-c++ >= 2.95.2
+BuildRequires: gcc
 
 %description
 This library implements the Atlas protocol, for use in client-server
@@ -35,7 +34,7 @@ clients or servers.
 %setup -q
 
 %build
-%configure --enable-static
+CXXFLAGS=$RPM_OPT_FLAGS %configure --enable-static
 make
 
 %install
@@ -48,7 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %{_libdir}/lib*.so.*
-%doc README COPYING AUTHORS THANKS NEWS ChangeLog TODO HACKING ROADMAP
+%doc README COPYING AUTHORS NEWS ChangeLog TODO
 
 %files devel
 %defattr(-,root,root)
