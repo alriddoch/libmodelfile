@@ -17,6 +17,7 @@
  */
 
 #include <libmd3/loader.h>
+#include <libmd3/mesh.h>
 #include <libmd3/structure.h>
 
 #include <stdlib.h>
@@ -55,8 +56,8 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
     assert(file != NULL);
     assert(file->header != NULL);
 
-    if (file->header->tag_start != (sizeof(md3_header) +
-                                    sizeof(md3_frame) * file->header->frame_count)) {
+    if (file->header->tag_start != (sizeof(md3_header) + sizeof(md3_frame) *
+                                    file->header->frame_count)) {
         fprintf(stderr, "Unexpected tag start pos in header.\n");
         return 1;
     }
@@ -88,17 +89,63 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
     return 0;
 }
 
-static int libmd3_skin_load(FILE * fptr, libmd3_file * file)
-{
-    return 0;
-}
-
 static int libmd3_mesh_load(FILE * fptr, libmd3_file * file)
 {
     assert(fptr != NULL);
     assert(file != NULL);
     assert(file->header != NULL);
 
+    if (file->header->mesh_count == 0) {
+        return 0;
+    }
+
+    libmd3_mesh * mesh = calloc(1, sizeof(libmd3_mesh));
+    if (mesh == NULL) {
+        perror("calloc");
+        return 1;
+    }
+
+    mesh->mesh_header = calloc(1, sizeof(md3_mesh));
+    if (mesh->mesh_header == NULL) {
+        perror("calloc");
+        free(mesh);
+        return 1;
+    }
+
+    if (fread(mesh->mesh_header, sizeof(md3_mesh), 1, fptr) != 1) {
+        fprintf(stderr, "Unexpected end of file.\n");
+        free(mesh->mesh_header);
+        free(mesh);
+        return 1;
+    }
+
+    if ((mesh->mesh_header->ident[0] != 'I') ||
+        (mesh->mesh_header->ident[0] != 'D') ||
+        (mesh->mesh_header->ident[0] != 'P') ||
+        (mesh->mesh_header->ident[0] != '3')) {
+        fprintf(stderr, "Invalid ident in mesh header.\n");
+        free(mesh->mesh_header);
+        free(mesh);
+        return 1;
+    }
+
+    mesh->skins = calloc(mesh->mesh_header->skin_count, sizeof(md3_skin));
+    if (mesh->skins == NULL) {
+        perror("calloc");
+        free(mesh->mesh_header);
+        free(mesh);
+        return 1;
+    }
+
+    int cnt = fread(mesh->skins, sizeof(md3_skin),
+                    mesh->mesh_header->skin_count, fptr);
+    if (cnt != mesh->mesh_header->skin_count) {
+        fprintf(stderr, "Unexpected end of file.\n");
+        free(mesh->mesh_header);
+        free(mesh->skins);
+        free(mesh);
+        return 1;
+    }
 
     return 0;
 }
@@ -156,7 +203,6 @@ libmd3_file * libmd3_file_load(const char * filename)
     libmd3_frame_load(fptr, file);
     libmd3_tag_load(fptr, file);
     libmd3_mesh_load(fptr, file);
-    libmd3_skin_load(fptr, file);
 
     return file;
 }

@@ -1,5 +1,15 @@
 2004-03-07  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/mesh.h: New structure for all the data associated with
+	  a mesh.
+
+	* libmd3/loader.h: Tweak the file structure to hold the mesh
+	  data pointers using new mesh data structure.
+
+	* libmd3/loader.c: Add code to load the mesh header, and skins.
+
+2004-03-07  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/structure.h: Fix spelling typo of md3_tag.position.
 
 	* libmd3/loader.c: Clean up loading of frames and tags.

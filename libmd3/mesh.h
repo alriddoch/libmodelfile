@@ -16,21 +16,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef LIBMD3_LOADER_H
-#define LIBMD3_LOADER_H
+#ifndef LIBMD3_MESH_H
+#define LIBMD3_MESH_H
 
-struct _md3_header;
-struct _md3_frame;
-struct _md3_tag;
-struct _libmd3_mesh;
+typedef struct _libmd3_mesh {
+    struct _md3_mesh * mesh_header;   /* Header for this mesh */
+    struct _md3_skin * skins;         /* skins */
+    
+} libmd3_mesh;
 
-typedef struct _libmd3_file {
-    struct _md3_header *    header;   /* Indexes of vertices */
-    struct _md3_frame *     frames;   /* frames */
-    struct _md3_tag *       tags;     /* tags */
-    struct _libmd3_mesh *   meshes;   /* meshes */
-} libmd3_file;
-
-libmd3_file * libmd3_file_load(const char * filename);
-
-#endif // LIBMD3_LOADER_H
+#endif // LIBMD3_MESH_H
