@@ -91,7 +91,9 @@ static void dump_frames(libmd3_file * file)
 
 static void dump_one_mesh(libmd3_mesh * mesh, int index)
 {
+    int i;
     md3_mesh * header = mesh->mesh_header;
+    md3_skin * skinp;
 
     if (strnlen(header->name, 68) == 68) {
         fprintf(stderr, "Unterminated string for name in mesh header.\n");
@@ -108,6 +110,16 @@ static void dump_one_mesh(libmd3_mesh * mesh, int index)
     printf("Mesn[%d]: texcoord_start = %d\n", index, header->texcoord_start);
     printf("Mesn[%d]: vertex_start = %d\n", index, header->vertex_start);
     printf("Mesn[%d]: mesh_len = %d\n", index, header->mesh_len);
+
+    skinp = mesh->skins;
+    for(i = 0; i < header->skin_count; ++i, ++skinp) {
+        if (strnlen(skinp->Name, 68) == 68) {
+            fprintf(stderr, "Unterminated string for mesh %d, skin %d.\n",
+                            index, i);
+            skinp->Name[67] = '\0';
+        }
+        printf("Mesh[%d]: Skin[%d] = \"%s\"\n", index, i, skinp->Name);
+    }
 }
 
 static void dump_meshes(libmd3_file * file)
