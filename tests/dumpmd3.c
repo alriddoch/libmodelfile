@@ -35,10 +35,7 @@ static void dump_header(md3_header * header)
 {
     printf("Got %s header version %d\n", header->version == 15 ? "standard" : "non-standard", header->version);
 
-    if (strnlen(header->filename, 68) == 68) {
-        fprintf(stderr, "Unterminated string for filename in file header.\n");
-        header->filename[67] = '\0';
-    }
+    header->filename[67] = '\0';
 
     printf("Header: filename = \"%s\"\n", header->filename);
     printf("Header: frame count = %d\n", header->frame_count);
@@ -96,10 +93,7 @@ static void dump_one_mesh(libmd3_mesh * mesh, int index)
     md3_mesh * header = mesh->mesh_header;
     md3_skin * skinp;
 
-    if (strnlen(header->name, 68) == 68) {
-        fprintf(stderr, "Unterminated string for name in mesh header.\n");
-        header->name[67] = '\0';
-    }
+    header->name[67] = '\0';
 
     printf("Mesh[%d]: name = \"%s\"\n", index, header->name);
     printf("Mesh[%d]: frame_count = %d\n", index, header->frame_count);
@@ -114,11 +108,7 @@ static void dump_one_mesh(libmd3_mesh * mesh, int index)
 
     skinp = mesh->skins;
     for(i = 0; i < header->skin_count; ++i, ++skinp) {
-        if (strnlen(skinp->name, 68) == 68) {
-            fprintf(stderr, "Unterminated string for mesh %d, skin %d.\n",
-                            index, i);
-            skinp->name[67] = '\0';
-        }
+        skinp->name[67] = '\0';
         printf("Mesh[%d]: Skin[%d] = \"%s\"\n", index, i, skinp->name);
     }
 
