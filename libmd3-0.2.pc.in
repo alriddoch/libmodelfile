@@ -7,4 +7,4 @@ Name: libmd3
 Description: An md3 model file loader
 Version: @VERSION@
 Libs: -L${libdir} @LIBMD3_LIBS@
-Cflags: -I${includedir}/libmodelfile@LIBMF_LIB_SUFFIX@/libmd3
+Cflags: -I${includedir}/libmodelfile@LIBMF_LIB_SUFFIX@
