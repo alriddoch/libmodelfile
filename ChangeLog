@@ -1,5 +1,9 @@
 2004-03-17  Al Riddoch  <alriddoch@zepler.org>
 
+	* Updated AUTHORS and README.
+
+2004-03-17  Al Riddoch  <alriddoch@zepler.org>
+
 	* tests/dumpmd3.c: Stop using strnlen, as its not part of the standard
 	  C library.
 
