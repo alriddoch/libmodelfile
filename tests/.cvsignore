@@ -3,4 +3,5 @@
 Makefile
 Makefile.in
 dumpmd3
+rendermd3
 testmd3
