@@ -1,5 +1,17 @@
 2004-03-14  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/convert.h, libmd3/convert.c: Add function to remove
+	  the env texcoords from the vertex data, so that rendering
+	  is more efficient if they are not required.
+
+	* tests/dumpmd3.c: Improve error handling, and test vertex
+	  conversion function.
+
+	* tests/rendermd3.c: Try out using the vertex conversion
+	  functionality.
+
+2004-03-14  Al Riddoch  <alriddoch@zepler.org>
+
 	* tests/rendermd3.c: Set colour for full brightness, and
 	  set background to grey for contrast. Detect if model is not
 	  found.

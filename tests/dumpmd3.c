@@ -19,6 +19,7 @@
 #include <libmd3/structure.h>
 #include <libmd3/loader.h>
 #include <libmd3/mesh.h>
+#include <libmd3/convert.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -151,6 +152,7 @@ static void dump_one_mesh(libmd3_mesh * mesh, int index)
                                    mesh->vertices[4 * i + 2]);
     }
     printf(" }\n");
+    libmd3_strip_env_texcoords(mesh);
 }
 
 static void dump_meshes(libmd3_file * file)
@@ -175,13 +177,16 @@ int main(int argc, char *argv[])
 
     if (argc != 2) {
         usage(argv[0]);
-        exit(1);
+
+        return 1;
     }
 
     file = libmd3_file_load(argv[1]);
     if (file == NULL) {
-        fprintf(stderr, "%s: Unable to load %s", argv[0], argv[1]);
+        fprintf(stderr, "%s: Unable to load %s\n", argv[0], argv[1]);
         perror(argv[1]);
+
+        return 1;
     }
 
     dump_header(file->header);

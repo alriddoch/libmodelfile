@@ -151,8 +151,17 @@ int initScreen()
 
 int setup(const char * file)
 {
+    int i;
+
     modelFile = libmd3_file_load(file);
-    return (modelFile == NULL);
+    if (modelFile == NULL) {
+        return 1;
+    }
+
+    /* for(i = 0; i < modelFile->header->mesh_count; ++i) {
+        libmd3_strip_env_texcoords(modelFile->meshes[i]);
+    } */
+    return 0;
 }
 
 static void fixPath(char * filename)
