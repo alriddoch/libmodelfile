@@ -39,17 +39,6 @@ AC_ARG_ENABLE(debug,
     ]
 )
 
-AC_LANG_C
-AC_REQUIRE_CPP
-
-dnl Test for <stdio.h> header file
-
-AC_CHECK_HEADERS(stdio.h)
-
-dnl Test for <stdint.h> header file
-
-AC_CHECK_HEADERS(stdint.h)
-
 LIBMD3_CFLAGS=""
 LIBMD3_LIB_SUFFIX="-0.2"
 LIBMD3_LIBS="-lmd3-$LIBMD3_LIB_SUFFIX"
