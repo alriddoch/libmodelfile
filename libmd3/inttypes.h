@@ -19,7 +19,7 @@
 #ifndef LIBMD3_INTTYPES_H
 #define LIBMD3_INTTYPES_H
 
-#if !defined(_MSC_VER)
+#if defined(_MSC_VER)
 
   typedef signed int int32_t;
   typedef signed short int16_t;

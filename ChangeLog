@@ -1,3 +1,13 @@
+2005-02-20  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/inttypes.h: Remove inverted pre-processor check used
+	  for debugging.
+
+	* libmd3/Makefile.am: Make sure inttypes.h is distributed.
+
+	* configure.ac: Increment version, and add a .zip distribution
+	  format.
+
 2005-02-14  Al Riddoch  <alriddoch@zepler.org>
 
 	* configure.ac: Cleanup.
