@@ -3,8 +3,8 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: Atlas-C++
-Description: The Atlas protocol C++ implementation
+Name: libmd3
+Description: An md3 model file loader
 Version: @VERSION@
-Libs: -L${libdir} @ATLAS_LIBS@
-Cflags: -I${includedir}/Atlas-C++@ATLAS_LIB_SUFFIX@
+Libs: -L${libdir} @LIBMD3_LIBS@
+Cflags: -I${includedir}/libmodelfile@LIBMF_LIB_SUFFIX@/libmd3
