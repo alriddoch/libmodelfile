@@ -1,3 +1,10 @@
+2004-03-01  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/structure.h: Re-order declarations to match order in file.
+
+	* libmd3/loader.h: Re-format, and add members to file structure
+	  to store pointers of other loaded structures.
+
 2004-02-29  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/structure.h: Re-format using spaces.

@@ -40,13 +40,6 @@ typedef struct _md3_header {
     int32_t         size;           /* File size */
 } md3_header;
 
-
-typedef struct _md3_tag {
-    int8_t          name[64];       /* Name */
-    float           postition[3];   /* Position */
-    float           rotation[9];    /* Rotation */
-} md3_tag;
-
 typedef struct _md3_bone {
     float           mins[3];
     float           maxs[3];
@@ -54,6 +47,12 @@ typedef struct _md3_bone {
     float           scale;
     int8_t          string[16];
 } md3_bone;
+
+typedef struct _md3_tag {
+    int8_t          name[64];       /* Name */
+    float           postition[3];   /* Position */
+    float           rotation[9];    /* Rotation */
+} md3_tag;
 
 typedef struct _md3_mesh {
     uint8_t         ident[4];       /* Always "IDP3" */ 
