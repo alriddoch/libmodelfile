@@ -34,7 +34,7 @@
 typedef struct _md3_header {
     uint8_t         ident[4];       /* Always "IDP3" */
     int32_t         version;        /* Always 15 */
-    uint8_t         filename[68];   /* Name of file */
+    int8_t          filename[68];   /* Name of file */
     int32_t         frame_count;    /* Number of frames */
     int32_t         tag_count;      /* Number of tags */
     int32_t         mesh_count;     /* Number of meshes */
@@ -75,7 +75,7 @@ typedef struct _md3_tag {
  */
 typedef struct _md3_mesh {
     uint8_t         ident[4];       /* Always "IDP3" */ 
-    uint8_t         name[68];       /* Name */ 
+    int8_t          name[68];       /* Name */ 
     int32_t         frame_count;    /* Number of mesh frames */
     int32_t         skin_count;     /* Number of skins */
     int32_t         vertex_count;   /* Number of vertices */

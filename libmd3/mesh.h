@@ -27,6 +27,7 @@ typedef struct _libmd3_mesh {
     int32_t *          triangles;
     float *            texcoords;
     int16_t *          vertices;
+    float *            normals;
     union {
         void * p;
         int i;

@@ -44,7 +44,7 @@ static const int step_time = 1000;
 
 static libmd3_file * modelFile = 0;
 
-SDL_Surface *LoadBMP(const char *filename)
+static SDL_Surface *LoadBMP(const char *filename)
 {
     Uint8 *rowhi, *rowlo;
     Uint8 *tmpbuf, tmpch;
@@ -85,7 +85,7 @@ SDL_Surface *LoadBMP(const char *filename)
 }
 
 /* Load Bitmaps And Convert To Textures */
-GLuint LoadGLTexture(const char * filename)
+static GLuint LoadGLTexture(const char * filename)
 {       
     /* Load Texture */
     SDL_Surface *image1;
@@ -108,7 +108,7 @@ GLuint LoadGLTexture(const char * filename)
     return texture;
 }
 
-int initScreen()
+static int initScreen()
 {
     const int width = 800;
     const int height = 600;
@@ -149,7 +149,7 @@ int initScreen()
     return 0;
 }
 
-int setup(const char * file)
+static int setup(const char * file)
 {
     int i;
 
@@ -174,7 +174,7 @@ static void fixPath(char * filename)
     }
 }
 
-void draw_one_mesh(libmd3_mesh * mesh)
+static void draw_one_mesh(libmd3_mesh * mesh)
 {
     if (mesh->mesh_header->skin_count != 0) {
         if (mesh->user.u == 0) {
@@ -200,7 +200,7 @@ void draw_one_mesh(libmd3_mesh * mesh)
     }
 }
 
-void draw_md3_file()
+static void draw_md3_file()
 {
     int i;
     libmd3_mesh * meshp;
@@ -217,58 +217,9 @@ void draw_md3_file()
 
 }
 
-void draw_one_block()
-{
-    static const float front_vertices[] = {
-        0.f, 0.f, 1.f,
-        1.f, 0.f, 1.f,
-        1.f, 1.f, 1.f,
-        0.f, 1.f, 1.f,
-    };
-    static const float left_vertices[] = {
-        0.f, 0.f, 0.f,
-        0.f, 0.f, 1.f,
-        0.f, 1.f, 1.f,
-        0.f, 1.f, 0.f,
-    };
-    static const float right_vertices[] = {
-        1.f, 0.f, 1.f,
-        1.f, 0.f, 0.f,
-        1.f, 1.f, 0.f,
-        1.f, 1.f, 1.f,
-    };
-    static const float top_vertices[] = {
-        0.f, 1.f, 1.f,
-        1.f, 1.f, 1.f,
-        1.f, 1.f, 0.f,
-        0.f, 1.f, 0.f,
-    };
-    static const float bottom_vertices[] = {
-        0.f, 0.f, 0.f,
-        1.f, 0.f, 0.f,
-        1.f, 0.f, 1.f,
-        0.f, 0.f, 1.f,
-    };
-
-    glVertexPointer(3, GL_FLOAT, 0, front_vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
-
-    glVertexPointer(3, GL_FLOAT, 0, left_vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
-
-    glVertexPointer(3, GL_FLOAT, 0, right_vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
-
-    glVertexPointer(3, GL_FLOAT, 0, top_vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
-
-    glVertexPointer(3, GL_FLOAT, 0, bottom_vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
-}
-
 static float rot = 0.0f;
 
-void render()
+static void render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -282,14 +233,13 @@ void render()
     /* glRotatef(10, sin(rot), cos(rot), 0.0f); */
 
     /* Draw the scene */
-    /* draw_one_block(); */
     glScalef(0.015625, 0.015625, 0.015625);
     draw_md3_file();
 
     SDL_GL_SwapBuffers();
 }
 
-void loop()
+static void loop()
 {
     SDL_Event event;
     int elapsed_time = SDL_GetTicks();
