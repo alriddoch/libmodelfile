@@ -39,7 +39,7 @@ AC_ARG_ENABLE(debug,
     ]
 )
 
-CFLAGS="$CFLAGS -Wall -std=c89"
+CFLAGS="$CFLAGS -Wall -std=c89 -pedantic"
 
 LIBMD3_CFLAGS=""
 LIBMD3_LIB_SUFFIX="-0.2"

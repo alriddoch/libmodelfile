@@ -1,3 +1,8 @@
+2004-04-04  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/loader.c, tests/rendermd3.c: Move declarations to the
+	  beginning of the block to confirm with old ISO C.
+
 2004-03-17  Al Riddoch  <alriddoch@zepler.org>
 
 	* tests/rendermd3.c: Remove legacy non-vertex array rendering code.

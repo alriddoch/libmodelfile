@@ -112,6 +112,7 @@ int initScreen()
 {
     const int width = 800;
     const int height = 600;
+    SDL_Surface * screen;
 
     /* Initialise SDL */
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE) != 0) {
@@ -120,8 +121,6 @@ int initScreen()
     }
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-    SDL_Surface * screen;
 
     /* Create the window */
     if ((screen = SDL_SetVideoMode(width, height, 0, SDL_OPENGL)) == NULL) {
@@ -226,42 +225,43 @@ void draw_one_block()
         1.f, 1.f, 1.f,
         0.f, 1.f, 1.f,
     };
-    glVertexPointer(3, GL_FLOAT, 0, front_vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
-
     static const float left_vertices[] = {
         0.f, 0.f, 0.f,
         0.f, 0.f, 1.f,
         0.f, 1.f, 1.f,
         0.f, 1.f, 0.f,
     };
-    glVertexPointer(3, GL_FLOAT, 0, left_vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
-
     static const float right_vertices[] = {
         1.f, 0.f, 1.f,
         1.f, 0.f, 0.f,
         1.f, 1.f, 0.f,
         1.f, 1.f, 1.f,
     };
-    glVertexPointer(3, GL_FLOAT, 0, right_vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
-
     static const float top_vertices[] = {
         0.f, 1.f, 1.f,
         1.f, 1.f, 1.f,
         1.f, 1.f, 0.f,
         0.f, 1.f, 0.f,
     };
-    glVertexPointer(3, GL_FLOAT, 0, top_vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
-
     static const float bottom_vertices[] = {
         0.f, 0.f, 0.f,
         1.f, 0.f, 0.f,
         1.f, 0.f, 1.f,
         0.f, 0.f, 1.f,
     };
+
+    glVertexPointer(3, GL_FLOAT, 0, front_vertices);
+    glDrawArrays(GL_QUADS, 0, 4);
+
+    glVertexPointer(3, GL_FLOAT, 0, left_vertices);
+    glDrawArrays(GL_QUADS, 0, 4);
+
+    glVertexPointer(3, GL_FLOAT, 0, right_vertices);
+    glDrawArrays(GL_QUADS, 0, 4);
+
+    glVertexPointer(3, GL_FLOAT, 0, top_vertices);
+    glDrawArrays(GL_QUADS, 0, 4);
+
     glVertexPointer(3, GL_FLOAT, 0, bottom_vertices);
     glDrawArrays(GL_QUADS, 0, 4);
 }
@@ -299,6 +299,9 @@ void loop()
     /* This is the main program loop. It will run until something sets
      * the flag to indicate we are done. */
     while (!done) {
+        int ticks;
+        float delta;
+
         /* Check for events */
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -319,7 +322,7 @@ void loop()
         }
         /* Get the time and check if enough time has elapsed for
          * the moving block to move */
-        int ticks = SDL_GetTicks();
+        ticks = SDL_GetTicks();
         ++fps;
         if ((ticks - last_step) > step_time) {
             last_step = ticks;
@@ -327,7 +330,7 @@ void loop()
             fps = 0;
             /* step(); */
         }
-        float delta = (ticks - elapsed_time) / 1000.0f;
+        delta = (ticks - elapsed_time) / 1000.0f;
         elapsed_time = ticks;
 
         /* Update the rotation on the camera */

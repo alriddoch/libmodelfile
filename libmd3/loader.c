@@ -27,6 +27,9 @@
 
 static int libmd3_frame_load(FILE * fptr, libmd3_file * file)
 {
+    md3_frame * frames;
+    int cnt;
+
     assert(fptr != NULL);
     assert(file != NULL);
     assert(file->header != NULL);
@@ -40,12 +43,12 @@ static int libmd3_frame_load(FILE * fptr, libmd3_file * file)
         return 1;
     }
 
-    md3_frame * frames = calloc(file->header->frame_count, sizeof(md3_frame));
+    frames = calloc(file->header->frame_count, sizeof(md3_frame));
     if (frames == NULL) {
         perror("calloc");
         return 1;
     }
-    int cnt = fread(frames, sizeof(md3_frame), file->header->frame_count, fptr);
+    cnt = fread(frames, sizeof(md3_frame), file->header->frame_count, fptr);
     if (cnt != file->header->frame_count) {
         fprintf(stderr, "Unexpected end of file.\n");
         free(frames);
@@ -57,6 +60,10 @@ static int libmd3_frame_load(FILE * fptr, libmd3_file * file)
 
 static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
 {
+    int num_tags;
+    md3_tag * tags;
+    int cnt;
+
     assert(fptr != NULL);
     assert(file != NULL);
     assert(file->header != NULL);
@@ -66,7 +73,7 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
         fprintf(stderr, "Unusual tag start pos in header.\n");
     }
 
-    int num_tags = file->header->frame_count * file->header->tag_count;
+    num_tags = file->header->frame_count * file->header->tag_count;
     if (num_tags == 0) {
         return 0;
     }
@@ -76,12 +83,12 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
         return 1;
     }
 
-    md3_tag * tags = calloc(num_tags, sizeof(md3_tag));
+    tags = calloc(num_tags, sizeof(md3_tag));
     if (tags == NULL) {
         perror("calloc");
         return 1;
     }
-    int cnt = fread(tags, sizeof(md3_tag), num_tags, fptr);
+    cnt = fread(tags, sizeof(md3_tag), num_tags, fptr);
     if (cnt != num_tags) {
         fprintf(stderr, "Unexpected end of file.\n");
         free(tags);
@@ -263,6 +270,7 @@ static int libmd3_meshes_load(FILE * fptr, libmd3_file * file)
     int i;
     libmd3_mesh * meshes;
     long file_pos;
+    libmd3_mesh * meshp;
 
     assert(fptr != NULL);
     assert(file != NULL);
@@ -284,7 +292,7 @@ static int libmd3_meshes_load(FILE * fptr, libmd3_file * file)
         return 1;
     }
 
-    libmd3_mesh * meshp = meshes;
+    meshp = meshes;
     for(i = 0; i < file->header->mesh_count; ++i, ++meshp) {
         if (libmd3_mesh_load(fptr, meshp)) {
             fprintf(stderr, "Unexpected error reading mesh %d\n", i);
