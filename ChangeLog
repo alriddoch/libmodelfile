@@ -1,5 +1,9 @@
 2004-03-12  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/loader.c: Fix calls to calloc with zero blocks.
+
+2004-03-12  Al Riddoch  <alriddoch@zepler.org>
+
 	* tests/rendermd3.c: Add example renderer code.
 
 2004-03-12  Al Riddoch  <alriddoch@zepler.org>

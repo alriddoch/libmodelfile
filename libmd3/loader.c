@@ -247,7 +247,7 @@ static int libmd3_meshes_load(FILE * fptr, libmd3_file * file)
 static md3_header * libmd3_header_load(FILE * fptr)
 {
     size_t len;
-    md3_header * header = calloc(0, sizeof(md3_header));
+    md3_header * header = calloc(1, sizeof(md3_header));
     if (header == NULL) {
         printf("2\n");
         return NULL;
@@ -285,7 +285,7 @@ libmd3_file * libmd3_file_load(const char * filename)
 
     header = libmd3_header_load(fptr);
 
-    file = calloc(0, sizeof(libmd3_file));
+    file = calloc(1, sizeof(libmd3_file));
     if (file == NULL) {
         printf("5\n");
         free(header);
