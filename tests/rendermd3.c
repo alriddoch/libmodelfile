@@ -88,9 +88,21 @@ void setup(const char * file)
 
 void draw_one_mesh(libmd3_mesh * mesh)
 {
+#if 0
     glVertexPointer(3, GL_SHORT, 2, mesh->vertices);
-    glDrawElements(GL_TRIANGLES, mesh->mesh_header->triangle_count,
+    glDrawElements(GL_TRIANGLES, mesh->mesh_header->triangle_count * 3,
                    GL_UNSIGNED_INT, mesh->triangles);
+#else
+    int i;
+
+    glBegin(GL_TRIANGLES);
+    for(i = 0; i < mesh->mesh_header->triangle_count * 3; ++i) {
+        int idx =  mesh->triangles[i];;
+        glVertex3s(mesh->vertices[4 * idx], mesh->vertices[4 * idx + 1], mesh->vertices[4 * idx + 2]);
+    }
+    glEnd();
+
+#endif
 }
 
 void draw_md3_file()
@@ -170,11 +182,12 @@ void render()
     glTranslatef(0.0f, 0.0f, -20.0f);
 
     /* Add a little camera movement */
-    glRotatef(10, sin(rot), cos(rot), 0.0f);
+    glRotatef((rot * 180) / M_PI, 1, 2, 0.0f);
+    /* glRotatef(10, sin(rot), cos(rot), 0.0f); */
 
     /* Draw the scene */
     /* draw_one_block(); */
-    glScalef(0.0001, 0.0001, 0.0001);
+    glScalef(0.01, 0.01, 0.01);
     draw_md3_file();
 
     SDL_GL_SwapBuffers();

@@ -1,5 +1,14 @@
 2004-03-12  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/loader.c: Use the stdint version of type for sizeof.
+
+	* tests/dumpmd3.c: Dump triangle indices, texcoords and vertex coords.
+
+	* tests/rendermd3.c: Implement discrete function based rendering.
+	  Sort out vertex arrays later.
+
+2004-03-12  Al Riddoch  <alriddoch@zepler.org>
+
 	* tests/rendermd3.c: Add first pass of mesh drawing code.
 
 2004-03-12  Al Riddoch  <alriddoch@zepler.org>

@@ -120,6 +120,37 @@ static void dump_one_mesh(libmd3_mesh * mesh, int index)
         }
         printf("Mesh[%d]: Skin[%d] = \"%s\"\n", index, i, skinp->Name);
     }
+
+    if (header->triangle_count == 0) {
+        printf("No triangles in mesh %d\n", index);
+        return;
+    }
+    printf("Mesh[%d]: Triangle indices = { %d", index, mesh->triangles[0]);
+    for(i = 1; i < header->triangle_count * 3; ++i) {
+        printf(", %d", mesh->triangles[i]);
+    }
+    printf(" }\n");
+
+    if (header->vertex_count == 0) {
+        printf("No vertices in mesh %d\n", index);
+        return;
+    }
+    printf("Mesh[%d]: Texture Coords = { [%f, %f]", index, mesh->texcoords[0],
+                                                           mesh->texcoords[1]);
+    for(i = 1; i < header->vertex_count; ++i) {
+        printf(" [%f, %f]", mesh->texcoords[2 * i], mesh->texcoords[2 * i + 1]);
+    }
+    printf(" }\n");
+
+    printf("Mesh[%d]: Vertices = { [%hd, %hd, %hd]", index, mesh->vertices[0],
+                                                            mesh->vertices[1],
+                                                            mesh->vertices[2]);
+    for(i = 1; i < header->vertex_count; ++i) {
+        printf(" [%hd, %hd, %hd]", mesh->vertices[4 * i],
+                                   mesh->vertices[4 * i + 1],
+                                   mesh->vertices[4 * i + 2]);
+    }
+    printf(" }\n");
 }
 
 static void dump_meshes(libmd3_file * file)

@@ -155,7 +155,7 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
         return 1;
     }
 
-    cnt = fread(mesh->triangles, sizeof(int), num_indices, fptr);
+    cnt = fread(mesh->triangles, sizeof(int32_t), num_indices, fptr);
     if (cnt != num_indices) {
         fprintf(stderr, "Unexpected end of file.\n");
         free(mesh->mesh_header);
