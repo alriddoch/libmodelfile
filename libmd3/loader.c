@@ -127,6 +127,21 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
         return 1;
     }
 
+#if 0
+    if (mesh->mesh_header->header_len > sizeof(md3_mesh)) {
+        /* FIXME Should we save the extra header */
+        printf("Skipping extra mesh header\n");
+        cnt = fseek(fptr, mesh->mesh_header->header_len - sizeof(md3_mesh),
+                    SEEK_CUR);
+        if (cnt != 0) {
+            fprintf(stderr, "Unexpected end of file.\n");
+            free(mesh->mesh_header);
+            free(mesh);
+            return 1;
+        }
+    }
+#endif
+
     mesh->skins = calloc(mesh->mesh_header->skin_count, sizeof(md3_skin));
     if (mesh->skins == NULL) {
         perror("calloc");
@@ -266,6 +281,17 @@ static md3_header * libmd3_header_load(FILE * fptr)
         printf("4\n");
         free(header);
         return NULL;
+    }
+
+    if (header->header_len > sizeof(md3_header)) {
+        /* FIXME Should we save the extra header */
+        printf("Skipping extra header\n");
+        len = fseek(fptr, header->header_len - sizeof(md3_header), SEEK_CUR);
+        if (len != 0) {
+            fprintf(stderr, "Unexpected end of file.\n");
+            free(header);
+            return NULL;
+        }
     }
 
     return header;

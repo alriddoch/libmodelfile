@@ -1,1 +1,8 @@
 Verify data in mesh header is consistent.
+
+It seems that in some files the triangles are considered part of the
+header, and included in the header length. The skins then follow the
+header, pretty much always. In fact header_len can be treated as skin_start,
+which does seem like a more likely interpretation. It may be worth making the
+same assumption with the main file header, where header_len is in fact
+frame_start. This makes the whole thing look more sane.

@@ -1,3 +1,13 @@
+2004-03-13  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/structure.h: Add some comments, including size in bytes
+	  of each structure.
+
+	* libmd3/loader.c: Add code to handle header_len attribute.
+
+	* tests/rendermd3.c: Disable SDL parachute, and tweak scale
+	  factor.
+
 2004-03-12  Al Riddoch  <alriddoch@zepler.org>
 
 	* tests/rendermd3.c: Slightly cleaner render code.

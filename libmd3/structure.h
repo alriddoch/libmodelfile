@@ -26,6 +26,11 @@
  * disk.
  */
 
+/* This is the md3 file header. It tells us how much of everything the file
+ * contains.
+ *
+ * 108 bytes
+ */
 typedef struct _md3_header {
     uint8_t         ident[4];       /* Always "IDP3" */
     int32_t         version;        /* Always 15 */
@@ -40,6 +45,10 @@ typedef struct _md3_header {
     int32_t         size;           /* File size */
 } md3_header;
 
+/* Frames for the bone animation.
+ *
+ * 56 bytes
+ */
 typedef struct _md3_frame {
     float           mins[3];
     float           maxs[3];
@@ -48,12 +57,22 @@ typedef struct _md3_frame {
     int8_t          string[16];
 } md3_frame;
 
+/* Tag indicating a connection to a tag in another file.
+ *
+ * 112 bytes
+ */
 typedef struct _md3_tag {
     int8_t          name[64];       /* Name */
     float           position[3];   /* Position */
     float           rotation[9];    /* Rotation */
 } md3_tag;
 
+/* Header for each mesh in the file, indicating how many frames, skins
+ * triangles, texcoords and vertixes are present. In some files we
+ * need to pay attention to the starts for each of these sets of data.
+ *
+ * 108 bytes
+ */
 typedef struct _md3_mesh {
     uint8_t         ident[4];       /* Always "IDP3" */ 
     uint8_t         name[68];       /* Name */ 
@@ -68,14 +87,26 @@ typedef struct _md3_mesh {
     int32_t         mesh_len;       /* Length of this mesh */
 } md3_mesh;
 
+/* Name of texture or skin file.
+ *
+ * 68 bytes
+ */
 typedef struct _md3_skin {
     uint8_t         Name[68];       /* Name */
 } md3_skin;
 
+/* Index numbers of three vertices which make a triangle
+ *
+ * 12 bytes
+ */
 typedef struct _md3_triangle {
     int32_t         vertices[3];    /* Indexes of vertices */
 } md3_triangle;
 
+/* Texture coordinate
+ *
+ * 8 bytes
+ */
 typedef struct _md3_texcoord {
     float           texcoord[2];    /* Indexes of vertices */
 } md3_texcoord;

@@ -45,7 +45,7 @@ int initScreen()
     const int height = 400;
 
     /* Initialise SDL */
-    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE) != 0) {
         fprintf(stderr, "Failed to initialise video\n");
         return 1;
     }
@@ -188,7 +188,7 @@ void render()
 
     /* Draw the scene */
     /* draw_one_block(); */
-    glScalef(0.01, 0.01, 0.01);
+    glScalef(0.001, 0.001, 0.001);
     draw_md3_file();
 
     SDL_GL_SwapBuffers();
