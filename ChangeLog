@@ -1,3 +1,12 @@
+2004-03-14  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/mesh.h, libmd3/loader.h: Add user union to libmd3 defined
+	  structs for extra info.
+
+	* libmd3/structure.h, tests/dumpmd3.c: Fix attribute typo.
+
+	* tests/rendermd3.c: Add handling for textures.
+
 2004-03-13  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/structure.h: Change comments, and attributes of in-files

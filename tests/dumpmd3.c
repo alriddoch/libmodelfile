@@ -113,12 +113,12 @@ static void dump_one_mesh(libmd3_mesh * mesh, int index)
 
     skinp = mesh->skins;
     for(i = 0; i < header->skin_count; ++i, ++skinp) {
-        if (strnlen(skinp->Name, 68) == 68) {
+        if (strnlen(skinp->name, 68) == 68) {
             fprintf(stderr, "Unterminated string for mesh %d, skin %d.\n",
                             index, i);
-            skinp->Name[67] = '\0';
+            skinp->name[67] = '\0';
         }
-        printf("Mesh[%d]: Skin[%d] = \"%s\"\n", index, i, skinp->Name);
+        printf("Mesh[%d]: Skin[%d] = \"%s\"\n", index, i, skinp->name);
     }
 
     if (header->triangle_count == 0) {

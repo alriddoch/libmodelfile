@@ -29,6 +29,11 @@ typedef struct _libmd3_file {
     struct _md3_frame *     frames;   /* frames */
     struct _md3_tag *       tags;     /* tags */
     struct _libmd3_mesh *   meshes;   /* meshes */
+    union {
+        void * p;
+        int i;
+        unsigned u;
+    } user;                           /* User data */
 } libmd3_file;
 
 libmd3_file * libmd3_file_load(const char * filename);

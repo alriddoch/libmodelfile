@@ -25,9 +25,13 @@
 #include <libmd3/mesh.h>
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 
 #include <GL/gl.h>
 #include <GL/glu.h>
+
+#include <stdlib.h>
+#include <string.h>
 
 #include <math.h>
 
@@ -38,6 +42,70 @@ static int done = 0;
 static const int step_time = 1000;
 
 static libmd3_file * modelFile = 0;
+
+SDL_Surface *LoadBMP(const char *filename)
+{
+    Uint8 *rowhi, *rowlo;
+    Uint8 *tmpbuf, tmpch;
+    SDL_Surface *image;
+    int i, j;
+
+    image = IMG_Load(filename);
+    if ( image == NULL ) {
+        fprintf(stderr, "Unable to load %s: %s\n", filename, SDL_GetError());
+        return(NULL);
+    }
+
+    /* GL surfaces are upsidedown and RGB, not BGR :-) */
+    tmpbuf = (Uint8 *)malloc(image->pitch);
+    if ( tmpbuf == NULL ) {
+        fprintf(stderr, "Out of memory\n");
+        return(NULL);
+    }
+    rowhi = (Uint8 *)image->pixels;
+    rowlo = rowhi + (image->h * image->pitch) - image->pitch;
+    for ( i=0; i<image->h/2; ++i ) {
+        for ( j=0; j<image->w; ++j ) {
+            tmpch = rowhi[j*3];
+            rowhi[j*3] = rowhi[j*3+2];
+            rowhi[j*3+2] = tmpch;
+            tmpch = rowlo[j*3];
+            rowlo[j*3] = rowlo[j*3+2];
+            rowlo[j*3+2] = tmpch;
+        }
+        memcpy(tmpbuf, rowhi, image->pitch);
+        memcpy(rowhi, rowlo, image->pitch);
+        memcpy(rowlo, tmpbuf, image->pitch);
+        rowhi += image->pitch;
+        rowlo -= image->pitch;
+    }
+    free(tmpbuf);
+    return(image);
+}
+
+/* Load Bitmaps And Convert To Textures */
+GLuint LoadGLTexture(const char * filename)
+{       
+    /* Load Texture */
+    SDL_Surface *image1;
+    GLuint texture;
+    
+    image1 = LoadBMP(filename);
+    if (!image1) {
+        return 0;
+    }
+
+    /* Create Texture */
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture); /* 2d texture (x and y size) */
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, image1->w, image1->h, 0, GL_RGB,
+                 GL_UNSIGNED_BYTE, image1->pixels);
+    return texture;
+}
 
 int initScreen()
 {
@@ -86,6 +154,16 @@ void setup(const char * file)
     modelFile = libmd3_file_load(file);
 }
 
+static void fixPath(char * filename)
+{
+    int i;
+    for(i = 0; i < strlen(filename); ++i) {
+        if (filename[i] == '\\') {
+            filename[i] = '/';
+        }
+    }
+}
+
 void draw_one_mesh(libmd3_mesh * mesh)
 {
 #if 0
@@ -95,13 +173,30 @@ void draw_one_mesh(libmd3_mesh * mesh)
 #else
     int i;
 
+    if (mesh->mesh_header->skin_count != 0) {
+        if (mesh->user.u == 0) {
+            fixPath(mesh->skins[0].name);
+            mesh->user.u = LoadGLTexture(mesh->skins[0].name);
+        }
+    }
+
+    if (mesh->user.u != 0) {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mesh->user.u);
+    }
+
     glBegin(GL_TRIANGLES);
     for(i = 0; i < mesh->mesh_header->triangle_count * 3; ++i) {
         unsigned int idx =  mesh->triangles[i];;
+        glTexCoord2fv(&mesh->texcoords[2 * idx]);
         glVertex3sv(&mesh->vertices[4 * idx]);
         /* glVertex3s(mesh->vertices[4 * idx], mesh->vertices[4 * idx + 1], mesh->vertices[4 * idx + 2]); */
     }
     glEnd();
+
+    if (mesh->user.u != 0) {
+        glDisable(GL_TEXTURE_2D);
+    }
 
 #endif
 }

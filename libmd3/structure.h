@@ -92,7 +92,7 @@ typedef struct _md3_mesh {
  * 68 bytes
  */
 typedef struct _md3_skin {
-    uint8_t         Name[68];       /* Name */
+    uint8_t         name[68];       /* Name */
 } md3_skin;
 
 /* Index numbers of three vertices which make a triangle
