@@ -1,3 +1,11 @@
+2004-02-29  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/loader.c, libmd3/loader.h: Add first stage of code
+	  to actually load the file.
+
+	* tests/dumpmd3.c: Test the load code, and dump the results to
+	  terminal.
+
 2004-02-28  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/structure.h: Add remaining items for on-disk data structures.

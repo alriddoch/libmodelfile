@@ -3,4 +3,4 @@
 Makefile
 Makefile.in
 libmd3-0.2.la
-libmd3.lo
+*.lo

@@ -74,11 +74,11 @@ typedef struct _md3_skin {
 } md3_skin;
 
 typedef struct _md3_triangle {
-	int32_t		vertices[3]	/* Indexes of vertices */
+	int32_t		vertices[3];	/* Indexes of vertices */
 } md3_triangle;
 
 typedef struct _md3_texcoord {
-	float		texcoord[2]	/* Indexes of vertices */
+	float		texcoord[2];	/* Indexes of vertices */
 } md3_texcoord;
 
 // mesh, skin etc.
