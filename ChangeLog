@@ -1,3 +1,11 @@
+2004-03-08  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/loader.c, libmd3/mesh.h: Implement loader for the
+	  rest of the mesh data.
+
+	* tests/dumpmd3.c: Start writing dump code for the rest of the mesh
+	  data.
+
 2004-03-07  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/mesh.h: Add member for triangles.

@@ -18,6 +18,7 @@
 
 #include <libmd3/structure.h>
 #include <libmd3/loader.h>
+#include <libmd3/mesh.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -29,7 +30,7 @@ static void usage(const char * prgname)
 }
 
 
-void dump_header(md3_header * header)
+static void dump_header(md3_header * header)
 {
     printf("Got %s header version %d\n", header->version == 15 ? "standard" : "non-standard", header->version);
 
@@ -49,7 +50,7 @@ void dump_header(md3_header * header)
     printf("Header: size = %d\n", header->size);
 }
 
-void dump_frames(libmd3_file * file)
+static void dump_frames(libmd3_file * file)
 {
     int i, j;
 
@@ -88,6 +89,17 @@ void dump_frames(libmd3_file * file)
     }
 }
 
+static void dump_meshes(libmd3_file * file)
+{
+    int i;
+    libmd3_mesh * meshp;
+
+    if (file->header->mesh_count == 0) {
+        printf("[No meshes in file]\n");
+        return;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     libmd3_file * file = NULL;
@@ -105,6 +117,7 @@ int main(int argc, char *argv[])
 
     dump_header(file->header);
     dump_frames(file);
+    dump_meshes(file);
 
     return 0;
 }

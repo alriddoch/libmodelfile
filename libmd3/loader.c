@@ -89,24 +89,15 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
     return 0;
 }
 
-static int libmd3_mesh_load(FILE * fptr, libmd3_file * file)
+static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
 {
     int cnt;
     int num_indices;
+    int num_texcoords;
+    int num_vertices;
+    size_t vertex_size;
 
-    assert(fptr != NULL);
-    assert(file != NULL);
-    assert(file->header != NULL);
-
-    if (file->header->mesh_count == 0) {
-        return 0;
-    }
-
-    libmd3_mesh * mesh = calloc(1, sizeof(libmd3_mesh));
-    if (mesh == NULL) {
-        perror("calloc");
-        return 1;
-    }
+    // We need a way to handle multiple mesh strcuture
 
     mesh->mesh_header = calloc(1, sizeof(md3_mesh));
     if (mesh->mesh_header == NULL) {
@@ -123,10 +114,14 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_file * file)
     }
 
     if ((mesh->mesh_header->ident[0] != 'I') ||
-        (mesh->mesh_header->ident[0] != 'D') ||
-        (mesh->mesh_header->ident[0] != 'P') ||
-        (mesh->mesh_header->ident[0] != '3')) {
-        fprintf(stderr, "Invalid ident in mesh header.\n");
+        (mesh->mesh_header->ident[1] != 'D') ||
+        (mesh->mesh_header->ident[2] != 'P') ||
+        (mesh->mesh_header->ident[3] != '3')) {
+        fprintf(stderr, "Invalid ident \"%c%c%c%c\" in mesh header.\n",
+                        mesh->mesh_header->ident[0],
+                        mesh->mesh_header->ident[1],
+                        mesh->mesh_header->ident[2],
+                        mesh->mesh_header->ident[3]);
         free(mesh->mesh_header);
         free(mesh);
         return 1;
@@ -168,6 +163,81 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_file * file)
         free(mesh->triangles);
         free(mesh);
         return 1;
+    }
+
+    num_texcoords = mesh->mesh_header->vertex_count * 2;
+    mesh->texcoords = calloc(num_texcoords, sizeof(float));
+    if (mesh->texcoords == NULL) {
+        perror("calloc");
+        free(mesh->mesh_header);
+        free(mesh->skins);
+        free(mesh->triangles);
+        free(mesh);
+        return 1;
+    }
+
+    cnt = fread(mesh->texcoords, sizeof(float), num_texcoords, fptr);
+    if (cnt != num_texcoords) {
+        fprintf(stderr, "Unexpected end of file.\n");
+        free(mesh->mesh_header);
+        free(mesh->skins);
+        free(mesh->triangles);
+        free(mesh->texcoords);
+        free(mesh);
+        return 1;
+    }
+
+    vertex_size = sizeof(int16_t) * 3 + sizeof(int8_t) * 2;
+    num_vertices = mesh->mesh_header->vertex_count * 
+                   mesh->mesh_header->frame_count;
+    mesh->vertices = calloc(num_vertices, vertex_size);
+    if (mesh->vertices == NULL) {
+        perror("calloc");
+        free(mesh->mesh_header);
+        free(mesh->skins);
+        free(mesh->triangles);
+        free(mesh->texcoords);
+        free(mesh);
+        return 1;
+    }
+
+    cnt = fread(mesh->vertices, vertex_size, num_vertices, fptr);
+    if (cnt != mesh->mesh_header->vertex_count) {
+        fprintf(stderr, "Unexpected end of file.\n");
+        free(mesh->mesh_header);
+        free(mesh->skins);
+        free(mesh->triangles);
+        free(mesh->texcoords);
+        free(mesh->vertices);
+        free(mesh);
+        return 1;
+    }
+
+    return 0;
+}
+
+static int libmd3_meshes_load(FILE * fptr, libmd3_file * file)
+{
+    int i;
+    libmd3_mesh * meshes;
+
+    assert(fptr != NULL);
+    assert(file != NULL);
+    assert(file->header != NULL);
+
+    if (file->header->mesh_count == 0) {
+        return 0;
+    }
+
+    meshes = calloc(file->header->mesh_count, sizeof(libmd3_mesh));
+    if (meshes == NULL) {
+        perror("calloc");
+        return 1;
+    }
+
+    libmd3_mesh * meshp = meshes;
+    for(i = 0; i < file->header->mesh_count; ++i, ++meshp) {
+        libmd3_mesh_load(fptr, meshp);
     }
 
     return 0;
@@ -225,7 +295,7 @@ libmd3_file * libmd3_file_load(const char * filename)
 
     libmd3_frame_load(fptr, file);
     libmd3_tag_load(fptr, file);
-    libmd3_mesh_load(fptr, file);
+    libmd3_meshes_load(fptr, file);
 
     return file;
 }

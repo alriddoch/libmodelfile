@@ -24,7 +24,9 @@
 typedef struct _libmd3_mesh {
     struct _md3_mesh * mesh_header;   /* Header for this mesh */
     struct _md3_skin * skins;         /* skins */
-    int32_t * triangles;
+    int32_t *          triangles;
+    float *            texcoords;
+    int16_t *          vertices;
 } libmd3_mesh;
 
 #endif // LIBMD3_MESH_H
