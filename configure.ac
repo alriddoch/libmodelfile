@@ -1,14 +1,15 @@
 dnl Initialise autoconf
 
-AC_INIT()
+AC_INIT(libmodelfile, 0.1.91)
 AC_CONFIG_SRCDIR([libmd3/loader.c])
 
 dnl Detect the canonical host and target environment
 
 AC_CANONICAL_SYSTEM
 
-VERSION=0.1.91
-AM_INIT_AUTOMAKE("libmodelfile", $VERSION)
+dnl Initialise automake
+
+AM_INIT_AUTOMAKE([dist-bzip2])
 AM_CONFIG_HEADER(config.h)
 
 dnl Initialise automake
@@ -21,8 +22,8 @@ AC_SUBST(LIBMF_INTERFACE_VERSION)
 
 dnl Test for GNU libtool
 
-AM_DISABLE_STATIC
-AM_PROG_LIBTOOL
+AC_DISABLE_STATIC
+AC_PROG_LIBTOOL
 
 dnl Test for C compiler
 

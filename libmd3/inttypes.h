@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Alistair Riddoch <alriddoch@zepler.org>
+/* Copyright (C) 2005 Alistair Riddoch <alriddoch@zepler.org>
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -16,23 +16,23 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef LIBMD3_MESH_H
-#define LIBMD3_MESH_H
+#ifndef LIBMD3_INTTYPES_H
+#define LIBMD3_INTTYPES_H
 
-#include <libmd3/inttypes.h>
+#if !defined(_MSC_VER)
 
-typedef struct _libmd3_mesh {
-    struct _md3_mesh * mesh_header;   /* Header for this mesh */
-    struct _md3_skin * skins;         /* skins */
-    int32_t *          triangles;
-    float *            texcoords;
-    int16_t *          vertices;
-    float *            normals;
-    union {
-        void * p;
-        int i;
-        unsigned u;
-    } user;                           /* User data */
-} libmd3_mesh;
+  typedef signed int int32_t;
+  typedef signed short int16_t;
+  typedef signed char int8_t;
 
-#endif /* LIBMD3_MESH_H */
+  typedef unsigned int uint32_t;
+  typedef unsigned short uint16_t;
+  typedef unsigned char uint8_t;
+
+#else /* defined(_MSC_VER) */
+
+  #include <stdint.h>
+
+#endif /* defined(_MSC_VER) */
+
+#endif /* LIBMD3_INTTYPES_H */

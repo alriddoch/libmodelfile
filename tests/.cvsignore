@@ -2,6 +2,7 @@
 .libs
 Makefile
 Makefile.in
+checksizes
 dumpmd3
 rendermd3
 testmd3

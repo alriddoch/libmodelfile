@@ -12,7 +12,7 @@ configure
 depcomp
 install-sh
 libmd3-0.2.pc
-libmd3.spec
+libmodelfile.spec
 libtool
 ltmain.sh
 missing

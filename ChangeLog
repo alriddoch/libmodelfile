@@ -1,3 +1,16 @@
+2005-02-14  Al Riddoch  <alriddoch@zepler.org>
+
+	* configure.ac: Cleanup.
+
+	* libmd3/inttypes.h: New header to handle int types on older platforms
+	  without C99.
+
+	* libmd3/mesh.h, libmd3/structure.h: Use new abstracted int types
+	  header.
+
+	* tests/checksizes.c: Check that assumptions made about word sizes
+	  are correct.
+
 2004-10-10  Al Riddoch  <alriddoch@zepler.org>
 
 	* Fix pkgconfig include path.

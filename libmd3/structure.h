@@ -19,7 +19,7 @@
 #ifndef LIBMD3_STRUCTURE_H
 #define LIBMD3_STRUCTURE_H
 
-#include <stdint.h>
+#include <libmd3/inttypes.h>
 
 /* This file contains definitions for the structures in a .md3 file on disk
  * They are typically used as targets for reading blocks of data from
