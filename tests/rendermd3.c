@@ -20,6 +20,10 @@
 #include <Windows.h>
 #endif
 
+#include <libmd3/structure.h>
+#include <libmd3/loader.h>
+#include <libmd3/mesh.h>
+
 #include <SDL/SDL.h>
 
 #include <GL/gl.h>
@@ -32,6 +36,8 @@
 static int done = 0;
 
 static const int step_time = 1000;
+
+static libmd3_file * modelFile = 0;
 
 int initScreen()
 {
@@ -73,6 +79,35 @@ int initScreen()
     gluPerspective(45, width/height, 1.f, 100.f);
 
     return 0;
+}
+
+void setup(const char * file)
+{
+    modelFile = libmd3_file_load(file);
+}
+
+void draw_one_mesh(libmd3_mesh * mesh)
+{
+    glVertexPointer(3, GL_SHORT, 2, mesh->vertices);
+    glDrawElements(GL_TRIANGLES, mesh->mesh_header->triangle_count,
+                   GL_UNSIGNED_INT, mesh->triangles);
+}
+
+void draw_md3_file()
+{
+    int i;
+    libmd3_mesh * meshp;
+
+    if (modelFile->header->mesh_count == 0) {
+        printf("[No meshes in file]\n");
+        return;
+    }
+
+    meshp = modelFile->meshes;
+    for(i = 0; i < modelFile->header->mesh_count; ++i, ++meshp) {
+        draw_one_mesh(meshp);
+    }
+
 }
 
 void draw_one_block()
@@ -138,7 +173,9 @@ void render()
     glRotatef(10, sin(rot), cos(rot), 0.0f);
 
     /* Draw the scene */
-    draw_one_block();
+    /* draw_one_block(); */
+    glScalef(0.0001, 0.0001, 0.0001);
+    draw_md3_file();
 
     SDL_GL_SwapBuffers();
 }
@@ -196,9 +233,16 @@ void loop()
 
 int main(int argc, char ** argv)
 {
+    if (argc != 2) {
+        fprintf(stderr, "No filename given\n");
+        return 1;
+    }
+
     if (initScreen()) {
         return 1;
     }
+
+    setup(argv[1]);
 
     loop();
     return 0;
