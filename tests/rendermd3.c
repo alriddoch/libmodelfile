@@ -26,7 +26,6 @@
 #include <libmd3/mesh.h>
 
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -51,7 +50,7 @@ static SDL_Surface *LoadBMP(const char *filename)
     SDL_Surface *image;
     int i, j;
 
-    image = IMG_Load(filename);
+    image = SDL_LoadBMP(filename);
     if ( image == NULL ) {
         fprintf(stderr, "Unable to load %s: %s\n", filename, SDL_GetError());
         return(NULL);
