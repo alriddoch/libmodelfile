@@ -97,8 +97,9 @@ void draw_one_mesh(libmd3_mesh * mesh)
 
     glBegin(GL_TRIANGLES);
     for(i = 0; i < mesh->mesh_header->triangle_count * 3; ++i) {
-        int idx =  mesh->triangles[i];;
-        glVertex3s(mesh->vertices[4 * idx], mesh->vertices[4 * idx + 1], mesh->vertices[4 * idx + 2]);
+        unsigned int idx =  mesh->triangles[i];;
+        glVertex3sv(&mesh->vertices[4 * idx]);
+        /* glVertex3s(mesh->vertices[4 * idx], mesh->vertices[4 * idx + 1], mesh->vertices[4 * idx + 2]); */
     }
     glEnd();
 
