@@ -91,6 +91,9 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
 
 static int libmd3_mesh_load(FILE * fptr, libmd3_file * file)
 {
+    int cnt;
+    int num_indices;
+
     assert(fptr != NULL);
     assert(file != NULL);
     assert(file->header != NULL);
@@ -137,12 +140,32 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_file * file)
         return 1;
     }
 
-    int cnt = fread(mesh->skins, sizeof(md3_skin),
+    cnt = fread(mesh->skins, sizeof(md3_skin),
                     mesh->mesh_header->skin_count, fptr);
     if (cnt != mesh->mesh_header->skin_count) {
         fprintf(stderr, "Unexpected end of file.\n");
         free(mesh->mesh_header);
         free(mesh->skins);
+        free(mesh);
+        return 1;
+    }
+
+    num_indices = mesh->mesh_header->triangle_count * 3;
+    mesh->triangles = calloc(num_indices, sizeof(int32_t));
+    if (mesh->triangles == NULL) {
+        perror("calloc");
+        free(mesh->mesh_header);
+        free(mesh->skins);
+        free(mesh);
+        return 1;
+    }
+
+    cnt = fread(mesh->triangles, sizeof(int), num_indices, fptr);
+    if (cnt != num_indices) {
+        fprintf(stderr, "Unexpected end of file.\n");
+        free(mesh->mesh_header);
+        free(mesh->skins);
+        free(mesh->triangles);
         free(mesh);
         return 1;
     }

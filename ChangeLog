@@ -1,5 +1,11 @@
 2004-03-07  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/mesh.h: Add member for triangles.
+
+	* libmd3/loader.c: Add loader for triangles.
+
+2004-03-07  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/mesh.h: New structure for all the data associated with
 	  a mesh.
 

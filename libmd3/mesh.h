@@ -19,10 +19,12 @@
 #ifndef LIBMD3_MESH_H
 #define LIBMD3_MESH_H
 
+#include <stdint.h>
+
 typedef struct _libmd3_mesh {
     struct _md3_mesh * mesh_header;   /* Header for this mesh */
     struct _md3_skin * skins;         /* skins */
-    
+    int32_t * triangles;
 } libmd3_mesh;
 
 #endif // LIBMD3_MESH_H
