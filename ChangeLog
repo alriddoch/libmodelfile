@@ -1,5 +1,10 @@
 2004-03-14  Al Riddoch  <alriddoch@zepler.org>
 
+	* tests/rendermd3.c: Fix convert code. Switch to vertex array
+	  rendering, now that the vertex data is packed.
+
+2004-03-14  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/convert.h, libmd3/convert.c: Add function to remove
 	  the env texcoords from the vertex data, so that rendering
 	  is more efficient if they are not required.

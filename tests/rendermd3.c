@@ -22,6 +22,7 @@
 
 #include <libmd3/structure.h>
 #include <libmd3/loader.h>
+#include <libmd3/convert.h>
 #include <libmd3/mesh.h>
 
 #include <SDL/SDL.h>
@@ -158,9 +159,9 @@ int setup(const char * file)
         return 1;
     }
 
-    /* for(i = 0; i < modelFile->header->mesh_count; ++i) {
-        libmd3_strip_env_texcoords(modelFile->meshes[i]);
-    } */
+    for(i = 0; i < modelFile->header->mesh_count; ++i) {
+        libmd3_strip_env_texcoords(&modelFile->meshes[i]);
+    }
     return 0;
 }
 
@@ -176,11 +177,6 @@ static void fixPath(char * filename)
 
 void draw_one_mesh(libmd3_mesh * mesh)
 {
-#if 0
-    glVertexPointer(3, GL_SHORT, 2, mesh->vertices);
-    glDrawElements(GL_TRIANGLES, mesh->mesh_header->triangle_count * 3,
-                   GL_UNSIGNED_INT, mesh->triangles);
-#else
     int i;
 
     if (mesh->mesh_header->skin_count != 0) {
@@ -192,23 +188,30 @@ void draw_one_mesh(libmd3_mesh * mesh)
 
     if (mesh->user.u != 0) {
         glEnable(GL_TEXTURE_2D);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glBindTexture(GL_TEXTURE_2D, mesh->user.u);
     }
 
+#if 1
+    glVertexPointer(3, GL_SHORT, 0, mesh->vertices);
+    glTexCoordPointer(2, GL_FLOAT, 0, mesh->texcoords);
+    glDrawElements(GL_TRIANGLES, mesh->mesh_header->triangle_count * 3,
+                   GL_UNSIGNED_INT, mesh->triangles);
+#else
     glBegin(GL_TRIANGLES);
     for(i = 0; i < mesh->mesh_header->triangle_count * 3; ++i) {
         unsigned int idx =  mesh->triangles[i];;
         glTexCoord2fv(&mesh->texcoords[2 * idx]);
-        glVertex3sv(&mesh->vertices[4 * idx]);
+        glVertex3sv(&mesh->vertices[3 * idx]);
         /* glVertex3s(mesh->vertices[4 * idx], mesh->vertices[4 * idx + 1], mesh->vertices[4 * idx + 2]); */
     }
     glEnd();
+#endif
 
     if (mesh->user.u != 0) {
         glDisable(GL_TEXTURE_2D);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     }
-
-#endif
 }
 
 void draw_md3_file()
@@ -333,6 +336,7 @@ void loop()
         ++fps;
         if ((ticks - last_step) > step_time) {
             last_step = ticks;
+            printf("fps = %d\n", fps);
             fps = 0;
             /* step(); */
         }
