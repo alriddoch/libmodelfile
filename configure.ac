@@ -1,7 +1,7 @@
 dnl Initialise autoconf
 
 AC_INIT()
-AC_CONFIG_SRCDIR([libmd3/libmd3.c])
+AC_CONFIG_SRCDIR([libmd3/loader.c])
 AM_CONFIG_HEADER(config.h)
 
 dnl Detect the canonical host and target environment
@@ -9,7 +9,7 @@ dnl Detect the canonical host and target environment
 AC_CANONICAL_SYSTEM
 
 VERSION=0.0.1
-AM_INIT_AUTOMAKE("libmd3", $VERSION)
+AM_INIT_AUTOMAKE("libmodelfile", $VERSION)
 
 dnl Initialise automake
 
