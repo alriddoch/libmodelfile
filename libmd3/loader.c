@@ -28,7 +28,7 @@
 static int libmd3_frame_load(FILE * fptr, libmd3_file * file)
 {
     md3_frame * frames;
-    int cnt;
+    size_t cnt;
 
     assert(fptr != NULL);
     assert(file != NULL);
@@ -62,7 +62,7 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
 {
     int num_tags;
     md3_tag * tags;
-    int cnt;
+    size_t cnt;
 
     assert(fptr != NULL);
     assert(file != NULL);
@@ -100,7 +100,7 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
 
 static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
 {
-    int cnt;
+    size_t cnt;
     int num_indices;
     int num_texcoords;
     int num_vertices;

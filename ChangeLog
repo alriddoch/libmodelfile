@@ -1,5 +1,10 @@
 2005-02-20  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/loader.c: Use size_t when getting return value from
+	  fread().
+
+2005-02-20  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/inttypes.h: Remove inverted pre-processor check used
 	  for debugging.
 
