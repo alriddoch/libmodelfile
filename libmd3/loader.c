@@ -30,17 +30,22 @@ static int libmd3_frame_load(FILE * fptr, libmd3_file * file)
     assert(file != NULL);
     assert(file->header != NULL);
 
+    if (file->header->frame_count == 0) {
+        return 0;
+    }
+
     md3_frame * frames = calloc(file->header->frame_count, sizeof(md3_frame));
     if (frames == NULL) {
         perror("calloc");
         return 1;
     }
-    file->frames = frames;
     int cnt = fread(frames, sizeof(md3_frame), file->header->frame_count, fptr);
     if (cnt != file->header->frame_count) {
         fprintf(stderr, "Unexpected end of file.\n");
+        free(frames);
         return 1;
     }
+    file->frames = frames;
     return 0;
 }
 
@@ -52,15 +57,19 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
 
     if (file->header->tag_start != (sizeof(md3_header) +
                                     sizeof(md3_frame) * file->header->frame_count)) {
-        fprintf(stderr, "Unexpected tag start pos.\n");
+        fprintf(stderr, "Unexpected tag start pos in header.\n");
         return 1;
     }
 
     int num_tags = file->header->frame_count * file->header->tag_count;
+    if (num_tags == 0) {
+        return 0;
+    }
+
     size_t len_tags = num_tags * sizeof(md3_tag);
-    printf("Expected len %d, actual len %d\n", len_tags, file->header->tag_end - file->header->tag_start);
+    printf("Actual len %d, stated len %d\n", len_tags, file->header->tag_end - file->header->tag_start);
     if (len_tags != (file->header->tag_end - file->header->tag_start)) {
-        fprintf(stderr, "Unexpected size of tags.\n");
+        fprintf(stderr, "Unexpected tag size in header.\n");
         return 1;
     }
 
@@ -72,18 +81,25 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
     int cnt = fread(tags, sizeof(md3_tag), num_tags, fptr);
     if (cnt != num_tags) {
         fprintf(stderr, "Unexpected end of file.\n");
+        free(tags);
         return 1;
     }
-    return 0;
-}
-
-static int libmd3_mesh_load(FILE * fptr, libmd3_file * file)
-{
+    file->tags = tags;
     return 0;
 }
 
 static int libmd3_skin_load(FILE * fptr, libmd3_file * file)
 {
+    return 0;
+}
+
+static int libmd3_mesh_load(FILE * fptr, libmd3_file * file)
+{
+    assert(fptr != NULL);
+    assert(file != NULL);
+    assert(file->header != NULL);
+
+
     return 0;
 }
 

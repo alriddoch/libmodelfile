@@ -21,10 +21,71 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 static void usage(const char * prgname)
 {
     printf("usage: %s <md3file>\n", prgname);
+}
+
+
+void dump_header(md3_header * header)
+{
+    printf("Got %s header version %d\n", header->version == 15 ? "standard" : "non-standard", header->version);
+
+    if (strnlen(header->filename, 68) == 68) {
+        fprintf(stderr, "Unterminated string for name in header.\n");
+        header->filename[67] = '\0';
+    }
+
+    printf("Header: filename = \"%s\"\n", header->filename);
+    printf("Header: frame count = %d\n", header->frame_count);
+    printf("Header: tag count = %d\n", header->tag_count);
+    printf("Header: mesh count = %d\n", header->mesh_count);
+    printf("Header: skin count = %d\n", header->skin_count);
+    printf("Header: header len = %d\n", header->header_len);
+    printf("Header: tag start = %d\n", header->tag_start);
+    printf("Header: tag end = %d\n", header->tag_end);
+    printf("Header: size = %d\n", header->size);
+}
+
+void dump_frames(libmd3_file * file)
+{
+    int i, j;
+
+    if (file->header->frame_count == 0) {
+        printf("[No frames in file]\n");
+        return;
+    }
+    for(i = 0; i < file->header->frame_count; ++i) {
+        md3_frame * frame = file->frames + i;
+        printf("Frame[%d]: mins = {%f, %f, %f}\n", i, frame->mins[0],
+                                                      frame->mins[1],
+                                                      frame->mins[2]);
+        printf("Frame[%d]: maxs = {%f, %f, %f}\n", i, frame->maxs[0],
+                                                      frame->maxs[1],
+                                                      frame->maxs[2]);
+        printf("Frame[%d]: position = {%f, %f, %f}\n", i, frame->position[0],
+                                                          frame->position[1],
+                                                          frame->position[2]);
+        printf("Frame[%d]: scale = %f\n", i, frame->scale);
+        for(j = 0; j < file->header->tag_count; ++j) {
+            md3_tag * tag = file->tags + (i * file->header->tag_count + j);
+            printf("Frame[%d]: Tag[%d]: name = %s\n", i, j, tag->name);
+            printf("Frame[%d]: Tag[%d]: position = {%f, %f, %f}\n", i, j, 
+                    tag->position[0], tag->position[1], tag->position[2]);
+            printf("Frame[%d]: Tag[%d]: rotation = {%f, %f, %f, %f, %f, %f, %f, %f, %f}\n", i, j,
+                   tag->rotation[0],
+                   tag->rotation[1],
+                   tag->rotation[2],
+                   tag->rotation[3],
+                   tag->rotation[4],
+                   tag->rotation[5],
+                   tag->rotation[6],
+                   tag->rotation[7],
+                   tag->rotation[8]);
+        }
+    }
 }
 
 int main(int argc, char *argv[])
@@ -42,20 +103,8 @@ int main(int argc, char *argv[])
         perror(argv[1]);
     }
 
-    printf("Got %s header version %d\n", file->header->version == 15 ? "standard" : "non-standard", file->header->version);
+    dump_header(file->header);
+    dump_frames(file);
 
-    if (strnlen(file->header->filename, 68) == 68) {
-        fprintf(stderr, "Unterminated string for name in header.\n");
-        file->header->filename[67] = '\0';
-    }
-
-    printf("Header: filename = \"%s\"\n", file->header->filename);
-    printf("Header: frame count = %d\n", file->header->frame_count);
-    printf("Header: tag count = %d\n", file->header->tag_count);
-    printf("Header: mesh count = %d\n", file->header->mesh_count);
-    printf("Header: skin count = %d\n", file->header->skin_count);
-    printf("Header: header len = %d\n", file->header->header_len);
-    printf("Header: tag start = %d\n", file->header->tag_start);
-    printf("Header: tag end = %d\n", file->header->tag_end);
-    printf("Header: size = %d\n", file->header->size);
+    return 0;
 }

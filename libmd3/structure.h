@@ -50,7 +50,7 @@ typedef struct _md3_frame {
 
 typedef struct _md3_tag {
     int8_t          name[64];       /* Name */
-    float           postition[3];   /* Position */
+    float           position[3];   /* Position */
     float           rotation[9];    /* Rotation */
 } md3_tag;
 

@@ -1,3 +1,12 @@
+2004-03-07  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/structure.h: Fix spelling typo of md3_tag.position.
+
+	* libmd3/loader.c: Clean up loading of frames and tags.
+
+	* tests/dumpmd3.c: Separate dumping header into function,
+	  and dump frames and tags.
+
 2004-03-06  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/structure.h, libmd3/loader.h: Clear up the naming of
