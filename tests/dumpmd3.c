@@ -35,7 +35,7 @@ static void dump_header(md3_header * header)
     printf("Got %s header version %d\n", header->version == 15 ? "standard" : "non-standard", header->version);
 
     if (strnlen(header->filename, 68) == 68) {
-        fprintf(stderr, "Unterminated string for name in header.\n");
+        fprintf(stderr, "Unterminated string for filename in file header.\n");
         header->filename[67] = '\0';
     }
 
@@ -89,6 +89,27 @@ static void dump_frames(libmd3_file * file)
     }
 }
 
+static void dump_one_mesh(libmd3_mesh * mesh, int index)
+{
+    md3_mesh * header = mesh->mesh_header;
+
+    if (strnlen(header->name, 68) == 68) {
+        fprintf(stderr, "Unterminated string for name in mesh header.\n");
+        header->name[67] = '\0';
+    }
+
+    printf("Mesh[%d]: name = \"%s\"\n", index, header->name);
+    printf("Mesn[%d]: frame_count = %d\n", index, header->frame_count);
+    printf("Mesn[%d]: skin_count = %d\n", index, header->skin_count);
+    printf("Mesn[%d]: vertex_count = %d\n", index, header->vertex_count);
+    printf("Mesn[%d]: triangle_count = %d\n", index, header->triangle_count);
+    printf("Mesn[%d]: triangle_start = %d\n", index, header->triangle_start);
+    printf("Mesn[%d]: header_len = %d\n", index, header->header_len);
+    printf("Mesn[%d]: texcoord_start = %d\n", index, header->texcoord_start);
+    printf("Mesn[%d]: vertex_start = %d\n", index, header->vertex_start);
+    printf("Mesn[%d]: mesh_len = %d\n", index, header->mesh_len);
+}
+
 static void dump_meshes(libmd3_file * file)
 {
     int i;
@@ -97,6 +118,11 @@ static void dump_meshes(libmd3_file * file)
     if (file->header->mesh_count == 0) {
         printf("[No meshes in file]\n");
         return;
+    }
+
+    meshp = file->meshes;
+    for(i = 0; i < file->header->mesh_count; ++i, ++meshp) {
+        dump_one_mesh(meshp, i);
     }
 }
 

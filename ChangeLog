@@ -1,3 +1,15 @@
+2004-03-12  Al Riddoch  <alriddoch@zepler.org>
+
+	* Add -std=c89 to compile flags to ensure ANSI C compatability.
+
+	* libmd3/loader.c: Correct check of mesh count when loading,
+	  and add meshes to the file structure.
+
+	* libmd3/loader.c, libmd3/loader.h, libmd3/mesh.h, libmd3/structure.h:
+	  Fix C99/C++ style comments.
+
+	* tests/dumpmd3.c: Implement dumping the mesh header.
+
 2004-03-08  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/loader.c, libmd3/mesh.h: Implement loader for the

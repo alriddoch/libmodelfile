@@ -29,4 +29,4 @@ typedef struct _libmd3_mesh {
     int16_t *          vertices;
 } libmd3_mesh;
 
-#endif // LIBMD3_MESH_H
+#endif /* LIBMD3_MESH_H */

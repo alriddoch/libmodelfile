@@ -80,4 +80,4 @@ typedef struct _md3_texcoord {
     float           texcoord[2];    /* Indexes of vertices */
 } md3_texcoord;
 
-#endif // LIBMD3_STRUCTURE_H
+#endif /* LIBMD3_STRUCTURE_H */

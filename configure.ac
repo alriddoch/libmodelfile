@@ -30,14 +30,16 @@ AC_ARG_ENABLE(debug,
     [  --enable-debug          enable debug information [default=no]],
     [
         if test "$enableval" = "yes"; then
-            CFLAGS="$CFLAGS -Wall -DDEBUG"
+            CFLAGS="$CFLAGS -DDEBUG"
         else
-            CFLAGS="$CFLAGS -Wall -DNDEBUG"
+            CFLAGS="$CFLAGS -DNDEBUG"
         fi
     ],[
-        CFLAGS="$CFLAGS -Wall -DNDEBUG"
+        CFLAGS="$CFLAGS -DNDEBUG"
     ]
 )
+
+CFLAGS="$CFLAGS -Wall -std=c89"
 
 LIBMD3_CFLAGS=""
 LIBMD3_LIB_SUFFIX="-0.2"

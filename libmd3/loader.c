@@ -97,7 +97,7 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
     int num_vertices;
     size_t vertex_size;
 
-    // We need a way to handle multiple mesh strcuture
+    /* We need a way to handle multiple mesh strcuture */
 
     mesh->mesh_header = calloc(1, sizeof(md3_mesh));
     if (mesh->mesh_header == NULL) {
@@ -202,7 +202,7 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
     }
 
     cnt = fread(mesh->vertices, vertex_size, num_vertices, fptr);
-    if (cnt != mesh->mesh_header->vertex_count) {
+    if (cnt != num_vertices) {
         fprintf(stderr, "Unexpected end of file.\n");
         free(mesh->mesh_header);
         free(mesh->skins);
@@ -240,6 +240,7 @@ static int libmd3_meshes_load(FILE * fptr, libmd3_file * file)
         libmd3_mesh_load(fptr, meshp);
     }
 
+    file->meshes = meshes;
     return 0;
 }
 
