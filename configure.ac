@@ -7,7 +7,7 @@ dnl Detect the canonical host and target environment
 
 AC_CANONICAL_SYSTEM
 
-VERSION=0.1.90
+VERSION=0.1.91
 AM_INIT_AUTOMAKE("libmodelfile", $VERSION)
 AM_CONFIG_HEADER(config.h)
 
