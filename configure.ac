@@ -2,14 +2,14 @@ dnl Initialise autoconf
 
 AC_INIT()
 AC_CONFIG_SRCDIR([libmd3/loader.c])
-AM_CONFIG_HEADER(config.h)
 
 dnl Detect the canonical host and target environment
 
 AC_CANONICAL_SYSTEM
 
-VERSION=0.0.1
+VERSION=0.1.90
 AM_INIT_AUTOMAKE("libmodelfile", $VERSION)
+AM_CONFIG_HEADER(config.h)
 
 dnl Initialise automake
 
@@ -24,7 +24,9 @@ dnl Test for GNU libtool
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
-dnl Test for C++ compiler
+dnl Test for C compiler
+
+AC_PROG_CC
 
 AC_ARG_ENABLE(debug,
     [  --enable-debug          enable debug information [default=no]],
