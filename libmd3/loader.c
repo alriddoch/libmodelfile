@@ -35,6 +35,11 @@ static int libmd3_frame_load(FILE * fptr, libmd3_file * file)
         return 0;
     }
 
+    if (fseek(fptr, file->header->frame_start, SEEK_SET) != 0) {
+        fprintf(stderr, "Unexpected error finding start of frames.\n");
+        return 1;
+    }
+
     md3_frame * frames = calloc(file->header->frame_count, sizeof(md3_frame));
     if (frames == NULL) {
         perror("calloc");
@@ -58,8 +63,7 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
 
     if (file->header->tag_start != (sizeof(md3_header) + sizeof(md3_frame) *
                                     file->header->frame_count)) {
-        fprintf(stderr, "Unexpected tag start pos in header.\n");
-        return 1;
+        fprintf(stderr, "Unusual tag start pos in header.\n");
     }
 
     int num_tags = file->header->frame_count * file->header->tag_count;
@@ -67,10 +71,8 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
         return 0;
     }
 
-    size_t len_tags = num_tags * sizeof(md3_tag);
-    printf("Actual len %d, stated len %d\n", len_tags, file->header->tag_end - file->header->tag_start);
-    if (len_tags != (file->header->tag_end - file->header->tag_start)) {
-        fprintf(stderr, "Unexpected tag size in header.\n");
+    if (fseek(fptr, file->header->tag_start, SEEK_SET) != 0) {
+        fprintf(stderr, "Unexpected error finding start of tags.\n");
         return 1;
     }
 
@@ -96,8 +98,14 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
     int num_texcoords;
     int num_vertices;
     size_t vertex_size;
+    long file_pos;
 
-    /* We need a way to handle multiple mesh strcuture */
+    file_pos = ftell(fptr);
+    if (file_pos == -1) {
+        fprintf(stderr, "Unexpected error reading start pos of mesh.\n");
+        free(mesh);
+        return 1;
+    }
 
     mesh->mesh_header = calloc(1, sizeof(md3_mesh));
     if (mesh->mesh_header == NULL) {
@@ -127,20 +135,12 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
         return 1;
     }
 
-#if 0
-    if (mesh->mesh_header->header_len > sizeof(md3_mesh)) {
-        /* FIXME Should we save the extra header */
-        printf("Skipping extra mesh header\n");
-        cnt = fseek(fptr, mesh->mesh_header->header_len - sizeof(md3_mesh),
-                    SEEK_CUR);
-        if (cnt != 0) {
-            fprintf(stderr, "Unexpected end of file.\n");
-            free(mesh->mesh_header);
-            free(mesh);
-            return 1;
-        }
+    if (fseek(fptr, file_pos + mesh->mesh_header->skin_start, SEEK_SET) != 0) {
+        fprintf(stderr, "Unexpected error finding start of skins.\n");
+        free(mesh->mesh_header);
+        free(mesh);
+        return 1;
     }
-#endif
 
     mesh->skins = calloc(mesh->mesh_header->skin_count, sizeof(md3_skin));
     if (mesh->skins == NULL) {
@@ -154,6 +154,14 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
                     mesh->mesh_header->skin_count, fptr);
     if (cnt != mesh->mesh_header->skin_count) {
         fprintf(stderr, "Unexpected end of file.\n");
+        free(mesh->mesh_header);
+        free(mesh->skins);
+        free(mesh);
+        return 1;
+    }
+
+    if (fseek(fptr, file_pos + mesh->mesh_header->triangle_start, SEEK_SET) != 0) {
+        fprintf(stderr, "Unexpected error finding start of tringles.\n");
         free(mesh->mesh_header);
         free(mesh->skins);
         free(mesh);
@@ -180,6 +188,15 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
         return 1;
     }
 
+    if (fseek(fptr, file_pos + mesh->mesh_header->texcoord_start, SEEK_SET) != 0) {
+        fprintf(stderr, "Unexpected error finding start of texcoords.\n");
+        free(mesh->mesh_header);
+        free(mesh->skins);
+        free(mesh->triangles);
+        free(mesh);
+        return 1;
+    }
+
     num_texcoords = mesh->mesh_header->vertex_count * 2;
     mesh->texcoords = calloc(num_texcoords, sizeof(float));
     if (mesh->texcoords == NULL) {
@@ -194,6 +211,16 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
     cnt = fread(mesh->texcoords, sizeof(float), num_texcoords, fptr);
     if (cnt != num_texcoords) {
         fprintf(stderr, "Unexpected end of file.\n");
+        free(mesh->mesh_header);
+        free(mesh->skins);
+        free(mesh->triangles);
+        free(mesh->texcoords);
+        free(mesh);
+        return 1;
+    }
+
+    if (fseek(fptr, file_pos + mesh->mesh_header->vertex_start, SEEK_SET) != 0) {
+        fprintf(stderr, "Unexpected error finding start of texcoords.\n");
         free(mesh->mesh_header);
         free(mesh->skins);
         free(mesh->triangles);
@@ -235,6 +262,7 @@ static int libmd3_meshes_load(FILE * fptr, libmd3_file * file)
 {
     int i;
     libmd3_mesh * meshes;
+    long file_pos;
 
     assert(fptr != NULL);
     assert(file != NULL);
@@ -242,6 +270,12 @@ static int libmd3_meshes_load(FILE * fptr, libmd3_file * file)
 
     if (file->header->mesh_count == 0) {
         return 0;
+    }
+
+    file_pos = file->header->mesh_start;
+    if (fseek(fptr, file_pos, SEEK_SET) != 0) {
+        fprintf(stderr, "Unexpected error seeking to meshes\n");
+        return 1;
     }
 
     meshes = calloc(file->header->mesh_count, sizeof(libmd3_mesh));
@@ -252,7 +286,15 @@ static int libmd3_meshes_load(FILE * fptr, libmd3_file * file)
 
     libmd3_mesh * meshp = meshes;
     for(i = 0; i < file->header->mesh_count; ++i, ++meshp) {
-        libmd3_mesh_load(fptr, meshp);
+        if (libmd3_mesh_load(fptr, meshp)) {
+            fprintf(stderr, "Unexpected error reading mesh %d\n", i);
+            return 1;
+        }
+        file_pos += meshp->mesh_header->mesh_len;
+        if (fseek(fptr, file_pos, SEEK_SET) != 0) {
+            fprintf(stderr, "Unexpected error seeking to mesh %d\n", i + 1 + 1);
+            return 1;
+        }
     }
 
     file->meshes = meshes;
@@ -281,17 +323,6 @@ static md3_header * libmd3_header_load(FILE * fptr)
         printf("4\n");
         free(header);
         return NULL;
-    }
-
-    if (header->header_len > sizeof(md3_header)) {
-        /* FIXME Should we save the extra header */
-        printf("Skipping extra header\n");
-        len = fseek(fptr, header->header_len - sizeof(md3_header), SEEK_CUR);
-        if (len != 0) {
-            fprintf(stderr, "Unexpected end of file.\n");
-            free(header);
-            return NULL;
-        }
     }
 
     return header;

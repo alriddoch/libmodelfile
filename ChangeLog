@@ -1,5 +1,19 @@
 2004-03-13  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/structure.h: Change comments, and attributes of in-files
+	  structures due to improved understanding.
+
+	* libmd3/loader.c: Re-write loader to work using start positions
+	  and seeking, rather than just reading sequentially, and hoping
+	  sections are in the right order.
+
+	* tests/dumpmd3.c: Fix typos and new names in dump output.
+
+	* tests/rendermd3.c: Use the official 1/64 scale and make the window
+	  bigger.
+
+2004-03-13  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/structure.h: Add some comments, including size in bytes
 	  of each structure.
 

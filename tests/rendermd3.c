@@ -41,8 +41,8 @@ static libmd3_file * modelFile = 0;
 
 int initScreen()
 {
-    const int width = 400;
-    const int height = 400;
+    const int width = 800;
+    const int height = 600;
 
     /* Initialise SDL */
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE) != 0) {
@@ -76,7 +76,7 @@ int initScreen()
     /* Set the projection transform */
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45, width/height, 1.f, 100.f);
+    gluPerspective(45, width/height, 1.f, 1000.f);
 
     return 0;
 }
@@ -180,7 +180,7 @@ void render()
     /* Set up the modelview - camera 20 units from the objects */
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glTranslatef(0.0f, 0.0f, -20.0f);
+    glTranslatef(0.0f, 0.0f, -60.0f);
 
     /* Add a little camera movement */
     glRotatef((rot * 180) / M_PI, 1, 2, 0.0f);
@@ -188,7 +188,7 @@ void render()
 
     /* Draw the scene */
     /* draw_one_block(); */
-    glScalef(0.001, 0.001, 0.001);
+    glScalef(0.015625, 0.015625, 0.015625);
     draw_md3_file();
 
     SDL_GL_SwapBuffers();

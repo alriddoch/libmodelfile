@@ -39,10 +39,10 @@ typedef struct _md3_header {
     int32_t         tag_count;      /* Number of tags */
     int32_t         mesh_count;     /* Number of meshes */
     int32_t         skin_count;     /* Number of skins */
-    int32_t         header_len;     /* Header length */
+    int32_t         frame_start;    /* Start of frames length */
     int32_t         tag_start;      /* Start of tags */
-    int32_t         tag_end;        /* End of tags */
-    int32_t         size;           /* File size */
+    int32_t         mesh_start;     /* Start of meshes */
+    int32_t         file_end;       /* End of file */
 } md3_header;
 
 /* Frames for the bone animation.
@@ -81,10 +81,10 @@ typedef struct _md3_mesh {
     int32_t         vertex_count;   /* Number of vertices */
     int32_t         triangle_count; /* Number of triangles */
     int32_t         triangle_start; /* Relative start of triangles */
-    int32_t         header_len;     /* Header length */
+    int32_t         skin_start;     /* Relative start of skins */
     int32_t         texcoord_start; /* Relative start of texcoords */
     int32_t         vertex_start;   /* Relative start of vertices */
-    int32_t         mesh_len;       /* Length of this mesh */
+    int32_t         mesh_len;       /* End of mesh */
 } md3_mesh;
 
 /* Name of texture or skin file.

@@ -44,10 +44,10 @@ static void dump_header(md3_header * header)
     printf("Header: tag count = %d\n", header->tag_count);
     printf("Header: mesh count = %d\n", header->mesh_count);
     printf("Header: skin count = %d\n", header->skin_count);
-    printf("Header: header len = %d\n", header->header_len);
+    printf("Header: frame start = %d\n", header->frame_start);
     printf("Header: tag start = %d\n", header->tag_start);
-    printf("Header: tag end = %d\n", header->tag_end);
-    printf("Header: size = %d\n", header->size);
+    printf("Header: mesh start = %d\n", header->mesh_start);
+    printf("Header: file end = %d\n", header->file_end);
 }
 
 static void dump_frames(libmd3_file * file)
@@ -101,15 +101,15 @@ static void dump_one_mesh(libmd3_mesh * mesh, int index)
     }
 
     printf("Mesh[%d]: name = \"%s\"\n", index, header->name);
-    printf("Mesn[%d]: frame_count = %d\n", index, header->frame_count);
-    printf("Mesn[%d]: skin_count = %d\n", index, header->skin_count);
-    printf("Mesn[%d]: vertex_count = %d\n", index, header->vertex_count);
-    printf("Mesn[%d]: triangle_count = %d\n", index, header->triangle_count);
-    printf("Mesn[%d]: triangle_start = %d\n", index, header->triangle_start);
-    printf("Mesn[%d]: header_len = %d\n", index, header->header_len);
-    printf("Mesn[%d]: texcoord_start = %d\n", index, header->texcoord_start);
-    printf("Mesn[%d]: vertex_start = %d\n", index, header->vertex_start);
-    printf("Mesn[%d]: mesh_len = %d\n", index, header->mesh_len);
+    printf("Mesh[%d]: frame_count = %d\n", index, header->frame_count);
+    printf("Mesh[%d]: skin_count = %d\n", index, header->skin_count);
+    printf("Mesh[%d]: vertex_count = %d\n", index, header->vertex_count);
+    printf("Mesh[%d]: triangle_count = %d\n", index, header->triangle_count);
+    printf("Mesh[%d]: triangle_start = %d\n", index, header->triangle_start);
+    printf("Mesh[%d]: skin start %d\n", index, header->skin_start);
+    printf("Mesh[%d]: texcoord_start = %d\n", index, header->texcoord_start);
+    printf("Mesh[%d]: vertex_start = %d\n", index, header->vertex_start);
+    printf("Mesh[%d]: mesh_len = %d\n", index, header->mesh_len);
 
     skinp = mesh->skins;
     for(i = 0; i < header->skin_count; ++i, ++skinp) {
