@@ -177,8 +177,6 @@ static void fixPath(char * filename)
 
 void draw_one_mesh(libmd3_mesh * mesh)
 {
-    int i;
-
     if (mesh->mesh_header->skin_count != 0) {
         if (mesh->user.u == 0) {
             fixPath(mesh->skins[0].name);
@@ -192,21 +190,10 @@ void draw_one_mesh(libmd3_mesh * mesh)
         glBindTexture(GL_TEXTURE_2D, mesh->user.u);
     }
 
-#if 1
     glVertexPointer(3, GL_SHORT, 0, mesh->vertices);
     glTexCoordPointer(2, GL_FLOAT, 0, mesh->texcoords);
     glDrawElements(GL_TRIANGLES, mesh->mesh_header->triangle_count * 3,
                    GL_UNSIGNED_INT, mesh->triangles);
-#else
-    glBegin(GL_TRIANGLES);
-    for(i = 0; i < mesh->mesh_header->triangle_count * 3; ++i) {
-        unsigned int idx =  mesh->triangles[i];;
-        glTexCoord2fv(&mesh->texcoords[2 * idx]);
-        glVertex3sv(&mesh->vertices[3 * idx]);
-        /* glVertex3s(mesh->vertices[4 * idx], mesh->vertices[4 * idx + 1], mesh->vertices[4 * idx + 2]); */
-    }
-    glEnd();
-#endif
 
     if (mesh->user.u != 0) {
         glDisable(GL_TEXTURE_2D);

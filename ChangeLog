@@ -1,5 +1,9 @@
 2004-03-17  Al Riddoch  <alriddoch@zepler.org>
 
+	* tests/rendermd3.c: Remove legacy non-vertex array rendering code.
+
+2004-03-17  Al Riddoch  <alriddoch@zepler.org>
+
 	* Updated AUTHORS and README.
 
 2004-03-17  Al Riddoch  <alriddoch@zepler.org>
