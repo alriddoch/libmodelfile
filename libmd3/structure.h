@@ -27,10 +27,10 @@
  */
 
 typedef struct _md3_header {
-	int8_t		ident[4];	/* Always "IDP3" */
+	uint8_t		ident[4];	/* Always "IDP3" */
 	int32_t		version;	/* Always 15 */
-	int8_t		filename[68];	/* */
-	int32_t		bone_count;	/* Number of bones */
+	uint8_t		filename[68];	/* Name of file */
+	int32_t		frame_count;	/* Number of frames */
 	int32_t		tag_count;	/* Number of tags */
 	int32_t		mesh_count;	/* Number of meshes */
 	int32_t		skin_count;	/* Number of skins */
@@ -54,6 +54,32 @@ typedef struct _md3_bone {
 	float		scale;
 	int8_t		string[16];
 } md3_bone;
+
+typedef struct _md3_mesh {
+	uint8_t		ident[4];	/* Always "IDP3" */ 
+	uint8_t		name[68];	/* Name */ 
+	int32_t		frame_count;	/* Number of mesh frames */
+	int32_t		skin_count;	/* Number of skins */
+	int32_t		vertex_count;	/* Number of vertices */
+	int32_t		triangle_count;	/* Number of triangles */
+	int32_t		triangle_start;	/* Relative start of triangles */
+	int32_t		header_len;	/* Header length */
+	int32_t		texcoord_start;	/* Relative start of texcoords */
+	int32_t		vertex_start;	/* Relative start of vertices */
+	int32_t		mesh_len;	/* Length of this mesh */
+} md3_mesh;
+
+typedef struct _md3_skin {
+	uint8_t		Name[68];	/* Name */
+} md3_skin;
+
+typedef struct _md3_triangle {
+	int32_t		vertices[3]	/* Indexes of vertices */
+} md3_triangle;
+
+typedef struct _md3_texcoord {
+	float		texcoord[2]	/* Indexes of vertices */
+} md3_texcoord;
 
 // mesh, skin etc.
 

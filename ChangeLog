@@ -1,3 +1,7 @@
+2004-02-28  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/structure.h: Add remaining items for on-disk data structures.
+
 2004-02-26  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/structure.h: Add new header for on-disk data structures.
