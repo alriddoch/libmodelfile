@@ -1,3 +1,7 @@
+2004-10-10  Al Riddoch  <alriddoch@zepler.org>
+
+	* Release 0.1.90.
+
 2004-05-21  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/mesh.h: Add member for normal data.
