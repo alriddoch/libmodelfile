@@ -6,3 +6,18 @@ header, pretty much always. In fact header_len can be treated as skin_start,
 which does seem like a more likely interpretation. It may be worth making the
 same assumption with the main file header, where header_len is in fact
 frame_start. This makes the whole thing look more sane.
+
+Extract normals:
+
+<damien> heres python for decoding normal from a 16bit value
+<damien> lat = (latlng >> 8) & 0xFF;
+<damien> lng = (latlng) & 0xFF;
+<damien> lat *= math.pi/128;
+<damien> lng *= math.pi/128;
+<damien> x = math.cos(lat) * math.sin(lng)
+<damien> y = math.sin(lat) * math.sin(lng)
+<damien> z =                 math.cos(lng)
+<damien> retval = [ x, y, z ]
+<damien> thats how quake 3 does it apparently
+
+Implement freeing models.
