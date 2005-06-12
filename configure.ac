@@ -1,16 +1,16 @@
 dnl Initialise autoconf
 
-AC_INIT(libmodelfile, 0.1.92)
+AC_INIT(libmodelfile, 0.1.92, alriddoch@zepler.org)
 AC_CONFIG_SRCDIR([libmd3/loader.c])
+AC_CONFIG_HEADERS([config.h])
 
 dnl Detect the canonical host and target environment
 
-AC_CANONICAL_SYSTEM
+AC_CANONICAL_HOST
 
 dnl Initialise automake
 
-AM_INIT_AUTOMAKE([dist-bzip2 dist-zip])
-AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE([dist-bzip2 dist-zip check-news])
 
 dnl Initialise automake
 
@@ -43,7 +43,6 @@ AC_ARG_ENABLE(debug,
 )
 
 CFLAGS="$CFLAGS -Wall -std=c89 -pedantic"
-
 
 LIBMF_CFLAGS=""
 LIBMF_LIB_SUFFIX="-0.2"

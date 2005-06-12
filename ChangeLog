@@ -1,5 +1,14 @@
 2005-02-20  Al Riddoch  <alriddoch@zepler.org>
 
+	* configure.ac: Cleanups.
+
+	* NEWS: Add placeholder for next release.
+
+	* libmodelfile.spec.in: Correct descriptions, and add packager
+	  tags. Generally cleanup.
+
+2005-02-20  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmodelfile.vcproj, Makefile.am: Add Visual Studio build file.
 
 	* tests/rendermd3.c: Eliminate dependency on SDL_Image.

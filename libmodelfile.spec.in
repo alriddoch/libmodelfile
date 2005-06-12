@@ -3,38 +3,34 @@
 %define release 1
 %define libsuffix @LIBMF_LIB_SUFFIX@
 
-Summary: The Atlas protocol C++ implementation
+Summary: A library for acessing various model file formats
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Copyright: LGPL
+Copyright: BSD
 Group: System Environment/Libraries
-Source: %{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
-BuildRequires: gcc
+Packager: Al Riddoch <alriddoch@zepler.org>
+Source: %{name}-%{version}.tar.bz2
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
-This library implements the Atlas protocol, for use in client-server
-game applications. It is the standard implementation used by games written
-by the WorldForge project. This library is suitable for linking to either
-clients or servers.
+The %{name} library is a collection of small clean C libraries for loading 3D
+models of various file formats. So far the range of model formats is limited.
 
 %package devel
-Summary: The Atlas protocol C++ implementation library headers and static libs.
+Summary: Development files for model file applications.
 Group: Development/Libraries
 Requires: %{name} = %{version}
 
 %description devel
-This library implements the Atlas protocol, for use in client-server
-game applications. It is the standard implementation used by games written
-by the WorldForge project. This library is suitable for linking to either
-clients or servers.
+The %{name}-devel package contains libraries, include files, and other
+resource you can use to develop model file applications.
 
 %prep
 %setup -q
 
 %build
-CXXFLAGS=$RPM_OPT_FLAGS %configure --enable-static
+%configure --enable-static
 make
 
 %install
@@ -47,7 +43,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %{_libdir}/lib*.so.*
-%doc README COPYING AUTHORS NEWS ChangeLog TODO
+%doc AUTHORS ChangeLog COPYING NEWS README TODO
 
 %files devel
 %defattr(-,root,root)
