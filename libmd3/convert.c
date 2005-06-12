@@ -20,19 +20,35 @@
 #include <libmd3/mesh.h>
 #include <libmd3/structure.h>
 
+#include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include <assert.h>
 
 void libmd3_strip_env_texcoords(libmd3_mesh * mesh)
 {
     int i;
+    uint8_t lat, lng;
+    float flat, flng;
 
     if (mesh->mesh_header->vertex_count < 2) {
         return;
     }
 
+    mesh->normals = calloc(mesh->mesh_header->vertex_count * 3, sizeof(float));
+
     for(i = 1; i < mesh->mesh_header->vertex_count; ++i) {
+        lat = (mesh->vertices[i * 4 + 3] >> 8) & 0xff;
+        lng = (mesh->vertices[i * 4 + 3]) & 0xff;
+
+        flat = lat * (3.14159265f / 128.f);
+        flng = lng * (3.14159265f / 128.f);
+
+        mesh->normals[i * 3 + 0] = cos(lat) * sin(lng);
+        mesh->normals[i * 3 + 1] = sin(lat) * sin(lng);
+        mesh->normals[i * 3 + 2] =            cos(lng);
+
         memmove(&mesh->vertices[i * 3],
                 &mesh->vertices[i * 4],
                 3 * sizeof(int16_t));

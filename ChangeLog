@@ -1,5 +1,10 @@
 2005-06-13  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/convert.c: Add experimental implementation of algorithm
+	  to extract normal data from md3 files.
+
+2005-06-13  Al Riddoch  <alriddoch@zepler.org>
+
 	* configure.ac: Cleanups.
 
 	* NEWS: Add placeholder for next release.
