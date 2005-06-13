@@ -1,5 +1,19 @@
 2005-06-13  Al Riddoch  <alriddoch@zepler.org>
 
+	* configure.ac: Check if libm is required for sin() and cos()
+	  functions.
+
+	* tests/Makefile.am: Fix libraries for the tests so they pick
+	  up libm if required.
+
+	* tests/dumpmd3.c: Dump mesh normals as part of dumping the entire
+	  model.
+
+	* tests/rendermd3.c: Enable lighting, and experiment with
+	  rendering using the normals.
+
+2005-06-13  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/convert.c: Add experimental implementation of algorithm
 	  to extract normal data from md3 files.
 

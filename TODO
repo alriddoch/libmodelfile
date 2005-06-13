@@ -21,3 +21,5 @@ Extract normals:
 <damien> thats how quake 3 does it apparently
 
 Implement freeing models.
+
+Check for an use sinf and cosf if available.

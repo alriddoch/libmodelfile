@@ -113,6 +113,10 @@ static int initScreen()
     const int height = 600;
     SDL_Surface * screen;
 
+    static const GLfloat AmbientColor[] = {0.6f, 0.6f, 0.7f, 1.f};
+    static const GLfloat DiffuseColor[] = {1.f, 1.f, 1.00, 1.f};
+    static const GLfloat lmodel_ambient[] = {0.f, 0.f, 0.f, 1.f};
+
     /* Initialise SDL */
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE) != 0) {
         fprintf(stderr, "Failed to initialise video\n");
@@ -133,6 +137,18 @@ static int initScreen()
 
     /* Enable the depth test */
     glEnable(GL_DEPTH_TEST);
+
+    glLightfv(GL_LIGHT1, GL_AMBIENT, AmbientColor);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, DiffuseColor);
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
+    glDisable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+
+    /* Enable lighting */
+    glEnable(GL_LIGHTING);
+
+    /* Enable normalisation of normals */
+    glEnable(GL_NORMALIZE);
 
     glEnableClientState(GL_VERTEX_ARRAY);
 
@@ -188,10 +204,15 @@ static void draw_one_mesh(libmd3_mesh * mesh)
         glBindTexture(GL_TEXTURE_2D, mesh->user.u);
     }
 
+    glEnableClientState(GL_NORMAL_ARRAY);
+
     glVertexPointer(3, GL_SHORT, 0, mesh->vertices);
     glTexCoordPointer(2, GL_FLOAT, 0, mesh->texcoords);
+    glNormalPointer(GL_FLOAT, 0, mesh->normals);
     glDrawElements(GL_TRIANGLES, mesh->mesh_header->triangle_count * 3,
                    GL_UNSIGNED_INT, mesh->triangles);
+
+    glDisableClientState(GL_NORMAL_ARRAY);
 
     if (mesh->user.u != 0) {
         glDisable(GL_TEXTURE_2D);
@@ -220,12 +241,16 @@ static float rot = 0.0f;
 
 static void render()
 {
+    static const GLfloat lightPos[] = {1.f, 0.f, 0.f, 0.f};
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     /* Set up the modelview - camera 20 units from the objects */
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glTranslatef(0.0f, 0.0f, -60.0f);
+
+    glLightfv(GL_LIGHT1, GL_POSITION, lightPos);
 
     /* Add a little camera movement */
     glRotatef((rot * 180) / M_PI, 1, 2, 0.0f);

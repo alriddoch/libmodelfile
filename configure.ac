@@ -44,6 +44,8 @@ AC_ARG_ENABLE(debug,
 
 CFLAGS="$CFLAGS -Wall -std=c89 -pedantic"
 
+AC_CHECK_FUNC(cos,,[AC_CHECK_LIB(m,cos)])
+
 LIBMF_CFLAGS=""
 LIBMF_LIB_SUFFIX="-0.2"
 LIBMD3_LIBS="-lmd3$LIBMF_LIB_SUFFIX"

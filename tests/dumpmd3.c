@@ -143,6 +143,16 @@ static void dump_one_mesh(libmd3_mesh * mesh, int index)
     }
     printf(" }\n");
     libmd3_strip_env_texcoords(mesh);
+
+    printf("Mesh[%d]: Normals = { [%f, %f, %f]", index, mesh->normals[0],
+                                                        mesh->normals[1],
+                                                        mesh->normals[2]);
+    for(i = 1; i < header->vertex_count; ++i) {
+        printf(" [%f, %f, %f]", mesh->normals[4 * i],
+                                mesh->normals[4 * i + 1],
+                                mesh->normals[4 * i + 2]);
+    }
+    printf(" }\n");
 }
 
 static void dump_meshes(libmd3_file * file)
