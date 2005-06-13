@@ -148,9 +148,9 @@ static void dump_one_mesh(libmd3_mesh * mesh, int index)
                                                         mesh->normals[1],
                                                         mesh->normals[2]);
     for(i = 1; i < header->vertex_count; ++i) {
-        printf(" [%f, %f, %f]", mesh->normals[4 * i],
-                                mesh->normals[4 * i + 1],
-                                mesh->normals[4 * i + 2]);
+        printf(" [%f, %f, %f]", mesh->normals[3 * i],
+                                mesh->normals[3 * i + 1],
+                                mesh->normals[3 * i + 2]);
     }
     printf(" }\n");
 }

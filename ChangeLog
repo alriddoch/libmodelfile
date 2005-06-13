@@ -1,5 +1,13 @@
 2005-06-13  Al Riddoch  <alriddoch@zepler.org>
 
+	* tests/dumpmd3.c: Fix dumping normals, which was formerly broken
+	  due to faulty pointer arithmetic.
+
+	* libmd3/convert.c: Fix ommitting the first normal, and try
+	  another aproach to the normal conversion.
+
+2005-06-13  Al Riddoch  <alriddoch@zepler.org>
+
 	* configure.ac: Check if libm is required for sin() and cos()
 	  functions.
 
