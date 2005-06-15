@@ -24,6 +24,6 @@ struct _md3_frame;
 struct _md3_tag;
 struct _libmd3_mesh;
 
-void libmd3_strip_env_texcoords(struct _libmd3_mesh *);
+void libmd3_unpack_normals(struct _libmd3_mesh *);
 
 #endif /* LIBMD3_CONVERT_H */

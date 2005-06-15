@@ -26,7 +26,7 @@
 
 #include <assert.h>
 
-void libmd3_strip_env_texcoords(libmd3_mesh * mesh)
+void libmd3_unpack_normals(libmd3_mesh * mesh)
 {
     int i;
     uint8_t lat, lng;
@@ -39,25 +39,15 @@ void libmd3_strip_env_texcoords(libmd3_mesh * mesh)
     mesh->normals = calloc(mesh->mesh_header->vertex_count * 3, sizeof(float));
 
     for(i = 0; i < mesh->mesh_header->vertex_count; ++i) {
-#if 0
         lat = (mesh->vertices[i * 4 + 3] >> 8) & 0xff;
         lng = (mesh->vertices[i * 4 + 3]) & 0xff;
 
         flat = lat * (3.14159265f / 128.f);
         flng = lng * (3.14159265f / 128.f);
-#else
-        lat = (mesh->vertices[i * 4 + 3]) & 0xff;
-        lng = (mesh->vertices[i * 4 + 3] >> 8) & 0xff;
 
-        flat = lat * (2.f * 3.14159265f / 256.f);
-        flng = lng * (2.f * 3.14159265f / 256.f);
-
-        printf("%hhd %hhd %f %f\n", lat, lng, flat, flng);
-#endif
-
-        mesh->normals[i * 3 + 0] = cos(lat) * sin(lng);
-        mesh->normals[i * 3 + 1] = sin(lat) * sin(lng);
-        mesh->normals[i * 3 + 2] =            cos(lng);
+        mesh->normals[i * 3 + 0] = cos(flat) * sin(flng);
+        mesh->normals[i * 3 + 1] = sin(flat) * sin(flng);
+        mesh->normals[i * 3 + 2] =             cos(flng);
 
         if (i == 0) { continue; }
 

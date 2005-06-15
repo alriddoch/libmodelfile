@@ -142,7 +142,7 @@ static void dump_one_mesh(libmd3_mesh * mesh, int index)
                                    mesh->vertices[4 * i + 2]);
     }
     printf(" }\n");
-    libmd3_strip_env_texcoords(mesh);
+    libmd3_unpack_normals(mesh);
 
     printf("Mesh[%d]: Normals = { [%f, %f, %f]", index, mesh->normals[0],
                                                         mesh->normals[1],

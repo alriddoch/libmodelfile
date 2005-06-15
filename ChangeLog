@@ -1,5 +1,14 @@
 2005-06-13  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/convert.c, libmd3/convert.h: Fix the normal extraction
+	  code, and rename function to unpack_normals to reflect its
+	  real job.
+
+	* tests/dumpmd3.c, tests/rendermd3.c: Use new function name for
+	  normals.
+
+2005-06-13  Al Riddoch  <alriddoch@zepler.org>
+
 	* tests/dumpmd3.c: Fix dumping normals, which was formerly broken
 	  due to faulty pointer arithmetic.
 

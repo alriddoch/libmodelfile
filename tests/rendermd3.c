@@ -174,7 +174,7 @@ static int setup(const char * file)
     }
 
     for(i = 0; i < modelFile->header->mesh_count; ++i) {
-        libmd3_strip_env_texcoords(&modelFile->meshes[i]);
+        libmd3_unpack_normals(&modelFile->meshes[i]);
     }
     return 0;
 }
