@@ -193,5 +193,7 @@ int main(int argc, char *argv[])
     dump_frames(file);
     dump_meshes(file);
 
+    libmd3_file_free(file);
+
     return 0;
 }

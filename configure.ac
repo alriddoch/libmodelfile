@@ -15,7 +15,7 @@ AM_INIT_AUTOMAKE([dist-bzip2 dist-zip check-news])
 dnl Initialise automake
 
 LIBMF_VERSION=$VERSION
-LIBMF_INTERFACE_VERSION='-version-info 0:0:0'
+LIBMF_INTERFACE_VERSION='-version-info 1:0:0'
 
 AC_SUBST(LIBMF_VERSION)
 AC_SUBST(LIBMF_INTERFACE_VERSION)

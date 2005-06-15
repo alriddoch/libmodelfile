@@ -23,3 +23,6 @@ Extract normals:
 Implement freeing models.
 
 Check for an use sinf and cosf if available.
+
+Freeing mesh in libmd3_mesh_load is bad, because it wasn't allocated
+as a mesh.

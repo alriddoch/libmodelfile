@@ -1,3 +1,15 @@
+2005-06-15  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/loader.c: Don't free mesh when it fails to load. Free all
+	  the meshes as that is how they were allocated.
+
+	* libmd3/loader.c, libmd3/loader.h: Add libmd3_file_free() to
+	  free the entire structure.
+
+	* tests/dumpmd3.c: Test that libmd3_file_free works.
+
+	* configure.ac: Increment interface version.
+
 2005-06-13  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/convert.c, libmd3/convert.h: Fix the normal extraction

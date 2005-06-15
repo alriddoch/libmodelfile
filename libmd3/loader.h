@@ -37,5 +37,6 @@ typedef struct _libmd3_file {
 } libmd3_file;
 
 libmd3_file * libmd3_file_load(const char * filename);
+void libmd3_file_free(libmd3_file * file);
 
 #endif /* LIBMD3_LOADER_H */
