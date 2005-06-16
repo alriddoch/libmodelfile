@@ -1,5 +1,10 @@
 2005-06-16  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/inttypes.h: Add in endian check, in readiness for
+	  making the loader endian independant.
+
+2005-06-16  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/loader.c: Fix some error conditions which were not 
 	  correctly checked or reported.
 
