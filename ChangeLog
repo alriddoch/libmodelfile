@@ -1,3 +1,8 @@
+2005-06-16  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/loader.c: Fix some error conditions which were not 
+	  correctly checked or reported.
+
 2005-06-15  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/loader.c: Don't free mesh when it fails to load. Free all

@@ -300,12 +300,12 @@ static md3_header * libmd3_header_load(FILE * fptr)
     size_t len;
     md3_header * header = calloc(1, sizeof(md3_header));
     if (header == NULL) {
-        printf("2\n");
+        perror("calloc");
         return NULL;
     }
 
     if ((len = fread(header, sizeof(md3_header), 1, fptr)) != 1) {
-        printf("3 %d %d\n", len, sizeof(md3_header));
+        fprintf(stderr, "Unexpected end of file.\n");
         free(header);
         return NULL;
     }
@@ -314,7 +314,7 @@ static md3_header * libmd3_header_load(FILE * fptr)
         (header->ident[1] != 'D') ||
         (header->ident[2] != 'P') ||
         (header->ident[3] != '3')) {
-        printf("4\n");
+        fprintf(stderr, "File header is not MD3 file.\n");
         free(header);
         return NULL;
     }
@@ -330,15 +330,19 @@ libmd3_file * libmd3_file_load(const char * filename)
 
     fptr = fopen(filename, "rb");
     if (fptr == NULL) {
-        printf("1\n");
+        fprintf(stderr, "Unable to open file \"%s\".\n", filename);
         return NULL;
     }
 
     header = libmd3_header_load(fptr);
 
+    if (header == NULL) {
+        return NULL;
+    }
+
     file = calloc(1, sizeof(libmd3_file));
     if (file == NULL) {
-        printf("5\n");
+        perror("calloc");
         free(header);
         return NULL;
     }
