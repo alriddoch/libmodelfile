@@ -1,3 +1,12 @@
+2005-06-20  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmd3/endian.c, libmd3/endian.h: New code to byte swap
+	  structures loaded from disk.
+
+	* libmd3/inttypes.h: Move the endian check into endian.h.
+
+	* libmd3/loader.c: Call byte swap functions on loaded structures.
+
 2005-06-16  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/inttypes.h: Add in endian check, in readiness for

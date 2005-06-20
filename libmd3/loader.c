@@ -19,6 +19,7 @@
 #include <libmd3/loader.h>
 #include <libmd3/mesh.h>
 #include <libmd3/structure.h>
+#include <libmd3/endian.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -54,6 +55,9 @@ static int libmd3_frame_load(FILE * fptr, libmd3_file * file)
         free(frames);
         return 1;
     }
+
+    libmd3_endian_frames(frames, file->header->frame_count);
+
     file->frames = frames;
     return 0;
 }
@@ -318,6 +322,8 @@ static md3_header * libmd3_header_load(FILE * fptr)
         free(header);
         return NULL;
     }
+
+    libmd3_endian_header(header);
 
     return header;
 }
