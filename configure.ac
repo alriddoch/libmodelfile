@@ -1,6 +1,6 @@
 dnl Initialise autoconf
 
-AC_INIT(libmodelfile, 0.1.92, alriddoch@zepler.org)
+AC_INIT(libmodelfile, 0.1.93, alriddoch@zepler.org)
 AC_CONFIG_SRCDIR([libmd3/loader.c])
 AC_CONFIG_HEADERS([config.h])
 

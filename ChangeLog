@@ -1,3 +1,7 @@
+2006-02-20  Al Riddoch  <alriddoch@zepler.org>
+
+	* configure.ac: Increment version.
+
 2005-06-20  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/endian.c, libmd3/endian.h: New code to byte swap
