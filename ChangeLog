@@ -9,6 +9,10 @@
 
 2005-06-16  Al Riddoch  <alriddoch@zepler.org>
 
+	* Release 0.1.92.
+
+2005-06-16  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/inttypes.h: Add in endian check, in readiness for
 	  making the loader endian independant.
 
