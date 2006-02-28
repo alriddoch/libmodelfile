@@ -1,3 +1,10 @@
+2006-02-28  Al Riddoch  <alriddoch@zepler.org>
+
+	* libmodelfile.spec.in: Fix the spec to use License: tag instead of
+	  deprecated Copyright:.
+
+	* NEWS: Fix the date for the last release.
+
 2006-02-20  Al Riddoch  <alriddoch@zepler.org>
 
 	* configure.ac: Increment version.
@@ -13,7 +20,7 @@
 
 2005-06-16  Al Riddoch  <alriddoch@zepler.org>
 
-	* Release 0.1.92.
+	* Release 0.1.92, interface version 1.
 
 2005-06-16  Al Riddoch  <alriddoch@zepler.org>
 

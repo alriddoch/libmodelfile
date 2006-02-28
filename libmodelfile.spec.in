@@ -7,7 +7,7 @@ Summary: A library for acessing various model file formats
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Copyright: BSD
+License: BSD
 Group: System Environment/Libraries
 Packager: Al Riddoch <alriddoch@zepler.org>
 Source: %{name}-%{version}.tar.bz2
