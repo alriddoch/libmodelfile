@@ -52,10 +52,21 @@
 
 #endif /* __linux __ */
 
+#include <libmd3/inttypes.h>
+
 struct _md3_header;
 struct _md3_frame;
+struct _md3_mesh;
+struct _md3_tag;
 
 void libmd3_endian_header(struct _md3_header *);
 void libmd3_endian_frames(struct _md3_frame * frames, int count);
+void libmd3_endian_mesh(struct _md3_mesh *);
+void libmd3_endian_tags(struct _md3_tag * tags, int count);
+
+void libmd3_endian_int32s(int32_t*, int count);
+void libmd3_endian_floats(float*, int count);
+
+void libmd3_endian_vertices(int16_t*, int num_vertices);
 
 #endif /* LIBMD3_ENDIAN_H */

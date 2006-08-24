@@ -51,7 +51,7 @@ static int libmd3_frame_load(FILE * fptr, libmd3_file * file)
     }
     cnt = fread(frames, sizeof(md3_frame), file->header->frame_count, fptr);
     if (cnt != file->header->frame_count) {
-        fprintf(stderr, "Unexpected end of file.\n");
+        fprintf(stderr, "Unexpected end of file reading frames.\n");
         free(frames);
         return 1;
     }
@@ -94,10 +94,12 @@ static int libmd3_tag_load(FILE * fptr, libmd3_file * file)
     }
     cnt = fread(tags, sizeof(md3_tag), num_tags, fptr);
     if (cnt != num_tags) {
-        fprintf(stderr, "Unexpected end of file.\n");
+        fprintf(stderr, "Unexpected end of file reading tags.\n");
         free(tags);
         return 1;
     }
+    
+    libmd3_endian_tags(tags, cnt);
     file->tags = tags;
     return 0;
 }
@@ -124,10 +126,12 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
     }
 
     if (fread(mesh->mesh_header, sizeof(md3_mesh), 1, fptr) != 1) {
-        fprintf(stderr, "Unexpected end of file.\n");
+        fprintf(stderr, "Unexpected end of file reading mesh.\n");
         free(mesh->mesh_header);
         return 1;
     }
+
+    libmd3_endian_mesh(mesh->mesh_header);
 
     if ((mesh->mesh_header->ident[0] != 'I') ||
         (mesh->mesh_header->ident[1] != 'D') ||
@@ -158,7 +162,7 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
     cnt = fread(mesh->skins, sizeof(md3_skin),
                     mesh->mesh_header->skin_count, fptr);
     if (cnt != mesh->mesh_header->skin_count) {
-        fprintf(stderr, "Unexpected end of file.\n");
+        fprintf(stderr, "Unexpected end of file reading skins.\n");
         free(mesh->mesh_header);
         free(mesh->skins);
         return 1;
@@ -182,12 +186,14 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
 
     cnt = fread(mesh->triangles, sizeof(int32_t), num_indices, fptr);
     if (cnt != num_indices) {
-        fprintf(stderr, "Unexpected end of file.\n");
+        fprintf(stderr, "Unexpected end of file reading triangles.\n");
         free(mesh->mesh_header);
         free(mesh->skins);
         free(mesh->triangles);
         return 1;
     }
+
+    libmd3_endian_int32s(mesh->triangles, num_indices);
 
     if (fseek(fptr, file_pos + mesh->mesh_header->texcoord_start, SEEK_SET) != 0) {
         fprintf(stderr, "Unexpected error finding start of texcoords.\n");
@@ -216,6 +222,8 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
         free(mesh->texcoords);
         return 1;
     }
+
+    libmd3_endian_floats(mesh->texcoords, num_texcoords);
 
     if (fseek(fptr, file_pos + mesh->mesh_header->vertex_start, SEEK_SET) != 0) {
         fprintf(stderr, "Unexpected error finding start of texcoords.\n");
@@ -249,6 +257,8 @@ static int libmd3_mesh_load(FILE * fptr, libmd3_mesh * mesh)
         free(mesh->vertices);
         return 1;
     }
+
+    libmd3_endian_vertices(mesh->vertices, num_vertices);
 
     return 0;
 }

@@ -1,5 +1,12 @@
 2006-08-24  Al Riddoch  <alriddoch@zepler.org>
 
+	* libmd3/endian.c, libmd3/endian.h: Add more endian functions to
+	  transform bulk data.
+
+	* libmd3/loader.c: Call the new endian functions on the mesh data.
+
+2006-08-24  Al Riddoch  <alriddoch@zepler.org>
+
 	* tests/rendermd3.c: Use SDL_Image to load textures, fix includes
 	  to deal with Apple's broken header names. Add zoom controls.
 
