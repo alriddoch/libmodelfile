@@ -1,5 +1,18 @@
 2006-08-24  Al Riddoch  <alriddoch@zepler.org>
 
+	* configure.ac: Increment version to 0.1.94 for release.
+
+	* NEWS: Add news item for release, and note about previous
+	  internal release.
+
+	* libmd3/convert.c, libmd3/convert.h, libmd3/endian.c,
+	  libmd3/endian.h, libmd3/inttypes.h, libmd3/loader.c,
+	  libmd3/loader.h, libmd3/mesh.h, libmd3/structure.h,
+	  tests/checksizes.c, tests/dumpmd3.c, tests/rendermd3.c:
+	  Attempt one at a more GPL compatable license wording.
+
+2006-08-24  Al Riddoch  <alriddoch@zepler.org>
+
 	* libmd3/endian.c, libmd3/endian.h: Add more endian functions to
 	  transform bulk data.
 
