@@ -27,8 +27,17 @@
 
 #include <SDL/SDL.h>
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+    #include <OpenGL/glu.h>
+    
+    #include <SDL_image/SDL_image.h>
+#else
+    #include <GL/gl.h>
+    #include <GL/glu.h>
+    
+    #include <SDL/SDL_image.h>
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -40,6 +49,9 @@
 static int done = 0;
 
 static const int step_time = 1000;
+
+static float scale = 0.1f;
+static const float SCALE_STEP = 1.25;
 
 static libmd3_file * modelFile = 0;
 
@@ -90,8 +102,9 @@ static GLuint LoadGLTexture(const char * filename)
     SDL_Surface *image1;
     GLuint texture;
     
-    image1 = LoadBMP(filename);
+    image1 = IMG_Load(filename);
     if (!image1) {
+        fprintf(stderr, "Unable to load image %s\n", filename);
         return 0;
     }
 
@@ -257,7 +270,7 @@ static void render()
     /* glRotatef(10, sin(rot), cos(rot), 0.0f); */
 
     /* Draw the scene */
-    glScalef(0.015625, 0.015625, 0.015625);
+    glScalef(scale, scale, scale);
     draw_md3_file();
 
     SDL_GL_SwapBuffers();
@@ -289,6 +302,15 @@ static void loop()
                         /* quit */
                         done = 1;
                     }
+                    
+                    if (event.key.keysym.sym == SDLK_MINUS) {
+                        scale /= SCALE_STEP;
+                    }
+                    
+                    if (event.key.keysym.sym == SDLK_EQUALS) {
+                        scale *= SCALE_STEP;
+                    }
+                    
                     break;
                 default:
                     break;

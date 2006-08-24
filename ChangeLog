@@ -1,3 +1,8 @@
+2006-08-24  Al Riddoch  <alriddoch@zepler.org>
+
+	* tests/rendermd3.c: Use SDL_Image to load textures, fix includes
+	  to deal with Apple's broken header names. Add zoom controls.
+
 2006-02-28  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmodelfile.spec.in: Fix the spec to use License: tag instead of
