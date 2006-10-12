@@ -18,7 +18,8 @@
 #include <libmd3/endian.h>
 #include <libmd3/structure.h>
 
-void swap_32(uint8_t * ptr)
+#if (LIBMD3_BYTE_ORDER != LIBMD3_LITTLE_ENDIAN)
+static void swap_32(uint8_t * ptr)
 {
     uint8_t tmp = ptr[0];
     ptr[0] = ptr[3];
@@ -28,14 +29,13 @@ void swap_32(uint8_t * ptr)
     ptr[2] = tmp;
 }
 
-void swap_16(uint8_t * ptr)
+static void swap_16(uint8_t * ptr)
 {
     uint8_t tmp = ptr[0];
     ptr[0] = ptr[1];
     ptr[1] = tmp;
 }
 
-#if (LIBMD3_BYTE_ORDER != LIBMD3_LITTLE_ENDIAN)
 static void swap_int32(int32_t * num)
 {
     swap_32((uint8_t*)num);
