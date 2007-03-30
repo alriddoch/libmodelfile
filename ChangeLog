@@ -1,3 +1,14 @@
+2007-03-30  Al Riddoch  <alriddoch@zepler.org>
+
+	* COPYING: Replace GPL text with zlib license text.
+
+	* libmd3/convert.c, libmd3/convert.h, libmd3/endian.c,
+	  libmd3/endian.h, libmd3/inttypes.h, libmd3/loader.c,
+	  libmd3/loader.h, libmd3/mesh.h, libmd3/structure.h,
+	  tests/checksizes.c, tests/dumpmd3.c, tests/rendermd3.c:
+	  Revert to original zlib license text wording, as it is approved
+	  as GPL compatible by the Free Software Foundation.
+
 2006-10-12  Al Riddoch  <alriddoch@zepler.org>
 
 	* libmd3/endian.c: Make a couple of byte swap functions, as their
