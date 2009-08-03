@@ -1,6 +1,6 @@
 dnl Initialise autoconf
 
-AC_INIT(libmodelfile, 0.1.94, alriddoch@zepler.org)
+AC_INIT([libmodelfile], [0.1.94], [alriddoch@googlemail.com])
 AC_CONFIG_SRCDIR([libmd3/loader.c])
 AC_CONFIG_HEADERS([config.h])
 
@@ -10,7 +10,7 @@ AC_CANONICAL_HOST
 
 dnl Initialise automake
 
-AM_INIT_AUTOMAKE([dist-bzip2 dist-zip check-news])
+AM_INIT_AUTOMAKE([nostdinc dist-bzip2 dist-zip check-news])
 
 dnl Initialise automake
 
@@ -58,10 +58,11 @@ AC_SUBST(LIBMF_LIBS)
 
 dnl Generate files
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 	Makefile
 	libmd3/Makefile
 	tests/Makefile
 	libmodelfile.spec
 	libmd3-0.2.pc
 ])
+AC_OUTPUT
