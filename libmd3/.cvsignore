@@ -1,6 +1,0 @@
-.deps
-.libs
-Makefile
-Makefile.in
-libmd3-0.2.la
-*.lo
