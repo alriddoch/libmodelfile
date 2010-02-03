@@ -1,4 +1,4 @@
-SUBDIRS = libmd3 tests
+SUBDIRS = libmd3 libcolladadae tests
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libmd3-0.2.pc

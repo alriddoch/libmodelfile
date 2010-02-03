@@ -61,6 +61,8 @@ dnl Generate files
 AC_CONFIG_FILES([
 	Makefile
 	libmd3/Makefile
+	libcolladadae/Makefile
+	libcolladadae/tests/Makefile
 	tests/Makefile
 	libmodelfile.spec
 	libmd3-0.2.pc
