@@ -22,3 +22,6 @@ libmd3-0.2.pc
 libmodelfile.spec
 libtool
 ltmain.sh
+libcolladadae/tests/dumpdae
+tests/checksizes
+tests/dumpmd3
