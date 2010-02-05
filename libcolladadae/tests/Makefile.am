@@ -1,6 +1,6 @@
 SUBDIRS =
 
-INCLUDES = $(top_srcdir)
+INCLUDES = -I$(top_srcdir)
 
 check_PROGRAMS = dumpdae
 

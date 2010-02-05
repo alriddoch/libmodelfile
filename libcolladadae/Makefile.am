@@ -1,3 +1,3 @@
 SUBDIRS = tests
 
-INCLUDES = $(top_srcdir)
+INCLUDES = -I$(top_srcdir)

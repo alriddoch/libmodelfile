@@ -48,14 +48,16 @@ AC_CHECK_FUNC(cos,,[AC_CHECK_LIB(m,cos)])
 
 PKG_PROG_PKG_CONFIG
 
-PKG_CHECK_MODULES(LIBXML, libxml-2.0,
+PKG_CHECK_MODULES(LIBXML2, libxml-2.0,
 [
+    CPPFLAGS="$CPPFLAGS $LIBXML2_CFLAGS"
+    LIBS="$LIBS $LIBXML2_LIBS"
 ],
 [
     AC_MSG_RESULT([no])
     AC_MSG_ERROR([
 Cannot find valid versions of required libxml2 library:
-$DEPS_PKG_ERRORS
+$LIBXML2_PKG_ERRORS
 Perhaps you should add the directory containing the missing libraries to the
 PKG_CONFIG_PATH environment variable.])
 ])
