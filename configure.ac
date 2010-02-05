@@ -46,6 +46,20 @@ CFLAGS="$CFLAGS -Wall -std=c89 -pedantic"
 
 AC_CHECK_FUNC(cos,,[AC_CHECK_LIB(m,cos)])
 
+PKG_PROG_PKG_CONFIG
+
+PKG_CHECK_MODULES(LIBXML, libxml-2.0,
+[
+],
+[
+    AC_MSG_RESULT([no])
+    AC_MSG_ERROR([
+Cannot find valid versions of required libxml2 library:
+$DEPS_PKG_ERRORS
+Perhaps you should add the directory containing the missing libraries to the
+PKG_CONFIG_PATH environment variable.])
+])
+
 LIBMF_CFLAGS=""
 LIBMF_LIB_SUFFIX="-0.2"
 LIBMD3_LIBS="-lmd3$LIBMF_LIB_SUFFIX"
