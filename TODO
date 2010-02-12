@@ -1,3 +1,21 @@
+General
+=======
+
+Add some simple lightweight vector math lib for communication and simple
+common storage.
+
+Add loaders for converting images into heightfield tiles.
+
+Add loaders for loading from flat memory.
+
+libcolladadae
+=============
+
+
+
+libmd3
+======
+
 Verify data in mesh header is consistent.
 
 It seems that in some files the triangles are considered part of the
