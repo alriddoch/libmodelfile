@@ -20,9 +20,10 @@
 #define LIBCOLLADADAE_PARSER_H
 
 typedef struct _libcolladadae_file {
+    void * place_holder;
 } libcolladadae_file;
 
 libcolladadae_file * libcolladadae_file_load(const char * filename);
 void libcolladadae_free(libcolladadae_file * file);
 
-#endif // LIBCOLLADADAE_PARSER_H
+#endif /* LIBCOLLADADAE_PARSER_H */
