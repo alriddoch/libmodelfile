@@ -16,17 +16,16 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef LIBCOLLADADAE_PARSER_H
-#define LIBCOLLADADAE_PARSER_H
+#ifndef LIBCOLLADADAE_STRUCTURE_H
+#define LIBCOLLADADAE_STRUCTURE_H
 
-struct dae_asset;
+typedef struct dae_contributor {
+    const char * dc_authoring_tool;
+} dae_contributor;
 
-typedef struct libcolladadae_file {
-    struct dae_asset * dae_assets;
-    void * place_holder;
-} libcolladadae_file;
+typedef struct dae_asset {
+    struct dae_contributor * da_contributors;
+    struct dae_asset * da_next;
+} dae_asset;
 
-libcolladadae_file * libcolladadae_file_load(const char * filename);
-void libcolladadae_free(libcolladadae_file * file);
-
-#endif /* LIBCOLLADADAE_PARSER_H */
+#endif /* LIBCOLLADADAE_STRUCTURE_H */
