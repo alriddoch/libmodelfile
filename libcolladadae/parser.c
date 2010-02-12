@@ -20,37 +20,76 @@
 
 #include <libxml/parser.h>
 
-xmlSAXHandler my_handler = {
-    0, /* internalSubsetSAXFunc, */
-    0, /* isStandaloneSAXFunc, */
-    0, /* hasInternalSubsetSAXFunc, */
-    0, /* hasExternalSubsetSAXFunc, */
-    0, /* resolveEntitySAXFunc, */
-    0, /* getEntitySAXFunc, */
-    0, /* entityDeclSAXFunc, */
-    0, /* notationDeclSAXFunc, */
-    0, /* attributeDeclSAXFunc, */
-    0, /* elementDeclSAXFunc, */
-    0, /* unparsedEntityDeclSAXFunc, */
-    0, /* setDocumentLocatorSAXFunc, */
-    0, /* startDocumentSAXFunc, */
-    0, /* endDocumentSAXFunc, */
-    0, /* startElementSAXFunc, */
-    0, /* endElementSAXFunc, */
-    0, /* referenceSAXFunc, */
-    0, /* charactersSAXFunc, */
-    0, /* ignorableWhitespaceSAXFunc, */
-    0, /* processingInstructionSAXFunc, */
-    0, /* commentSAXFunc, */
-    0, /* warningSAXFunc, */
-    0, /* errorSAXFunc, */
-    0, /* fatalErrorSAXFunc, */
+#include <assert.h>
+
+typedef struct _dae_parser_state {
+    libcolladadae_file * dps_file;
+} dae_parser_state;
+
+static void dae_start(dae_parser_state * state)
+{
+    assert(state != NULL);
+
+    printf("%s\n", __func__);
+    state->dps_file = calloc(1, sizeof(libcolladadae_file));
+}
+
+static void dae_end(dae_parser_state * state)
+{
+    assert(state != NULL);
+
+    printf("%s\n", __func__);
+    state->dps_file = calloc(1, sizeof(libcolladadae_file));
+}
+
+static void dae_start_element(dae_parser_state *ctx,
+                              const xmlChar *name,
+                              const xmlChar **atts)
+{
+    printf("<%s>\n", name);
+}
+
+static void dae_end_element(dae_parser_state *ctx,
+                            const xmlChar *name)
+{
+    printf("</%s>\n", name);
+}
+
+static xmlSAXHandler dae_handler = {
+    (internalSubsetSAXFunc)0,
+    (isStandaloneSAXFunc)0,
+    (hasInternalSubsetSAXFunc)0,
+    (hasExternalSubsetSAXFunc)0,
+    (resolveEntitySAXFunc)0,
+    (getEntitySAXFunc)0,
+    (entityDeclSAXFunc)0,
+    (notationDeclSAXFunc)0,
+    (attributeDeclSAXFunc)0,
+    (elementDeclSAXFunc)0,
+    (unparsedEntityDeclSAXFunc)0,
+    (setDocumentLocatorSAXFunc)0,
+    (startDocumentSAXFunc)&dae_start,
+    (endDocumentSAXFunc)&dae_end,
+    (startElementSAXFunc)&dae_start_element,
+    (endElementSAXFunc)&dae_end_element,
+    (referenceSAXFunc)0,
+    (charactersSAXFunc)0,
+    (ignorableWhitespaceSAXFunc)0,
+    (processingInstructionSAXFunc)0,
+    (commentSAXFunc)0,
+    (warningSAXFunc)0,
+    (errorSAXFunc)0,
+    (fatalErrorSAXFunc)0,
 };
 
 libcolladadae_file * libcolladadae_file_load(const char * filename)
 {
+    dae_parser_state parser_state;
+    xmlSAXUserParseFile(&dae_handler, &parser_state, filename);
+    return parser_state.dps_file;
 }
 
 void libcolladadae_free(libcolladadae_file * file)
 {
+    free(file);
 }

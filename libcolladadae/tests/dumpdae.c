@@ -15,5 +15,6 @@ int main(int argc, char ** argv)
         fprintf(stderr, "Parsing %s failed\n", argv[1]);
         return 1;
     }
+    libcolladadae_free(ret);
     return 0;
 }
