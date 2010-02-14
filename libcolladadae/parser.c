@@ -55,6 +55,13 @@ static void dae_end_element(dae_parser_state *ctx,
     printf("</%s>\n", name);
 }
 
+static void dae_characters(dae_parser_state *ctx,
+                           const xmlChar *name,
+                           int len)
+{
+    printf("%d chrs\n", len);
+}
+
 static xmlSAXHandler dae_handler = {
     (internalSubsetSAXFunc)0,
     (isStandaloneSAXFunc)0,
@@ -73,7 +80,7 @@ static xmlSAXHandler dae_handler = {
     (startElementSAXFunc)&dae_start_element,
     (endElementSAXFunc)&dae_end_element,
     (referenceSAXFunc)0,
-    (charactersSAXFunc)0,
+    (charactersSAXFunc)&dae_characters,
     (ignorableWhitespaceSAXFunc)0,
     (processingInstructionSAXFunc)0,
     (commentSAXFunc)0,
