@@ -21,12 +21,9 @@
 
 struct dae_asset;
 
-typedef struct libcolladadae_file {
-    struct dae_asset * dae_assets;
-    void * place_holder;
-} libcolladadae_file;
+struct libcolladadae_file;
 
-libcolladadae_file * libcolladadae_file_load(const char * filename);
-void libcolladadae_free(libcolladadae_file * file);
+struct libcolladadae_file * libcolladadae_file_load(const char * filename);
+void libcolladadae_free(struct libcolladadae_file * file);
 
 #endif /* LIBCOLLADADAE_PARSER_H */

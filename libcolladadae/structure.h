@@ -28,4 +28,9 @@ typedef struct dae_asset {
     struct dae_asset * da_next;
 } dae_asset;
 
+typedef struct libcolladadae_file {
+    struct dae_asset * dae_assets;
+    void * place_holder;
+} libcolladadae_file;
+
 #endif /* LIBCOLLADADAE_STRUCTURE_H */

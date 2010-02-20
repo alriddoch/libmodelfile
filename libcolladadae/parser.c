@@ -18,6 +18,8 @@
 
 #include <libcolladadae/parser.h>
 
+#include <libcolladadae/structure.h>
+
 #include <libxml/parser.h>
 
 #include <assert.h>

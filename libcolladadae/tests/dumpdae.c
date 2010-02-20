@@ -1,4 +1,5 @@
 #include <libcolladadae/parser.h>
+#include <libcolladadae/structure.h>
 
 #include <stdio.h>
 
